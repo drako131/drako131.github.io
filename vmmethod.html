@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALHACK VM Method - Free Valorant VM Setup Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1f0a 0%, #0d2b0d 50%, #051a05 100%);
+            color: #e0ffe0;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 100, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 150, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 200, 100, 0.03) 0%, transparent 50%);
+            animation: particles 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes particles {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        /* Custom cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff88;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            transform: translate(-50%, -50%);
+        }
+
+/*        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.3s ease;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+        }*/
+
+        .cursor.active {
+            transform: scale(1.5);
+            background: rgba(0, 255, 136, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 30, 0, 0.8);
+            padding: 10px 15px;
+            border-radius: 30px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 2px solid transparent;
+            color: #00ff88;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lang-btn:hover {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: #0a1f0a;
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: rgba(0, 50, 0, 0.3);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.2);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 136, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        header h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #00ff88 0%, #00ffcc 50%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        header .subtitle {
+            color: #80ffaa;
+            font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .warning-box {
+            background: rgba(255, 100, 80, 0.1);
+            border-left: 4px solid #ff6644;
+            border-right: 4px solid transparent;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(255, 100, 80, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .warning-box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 15px 40px rgba(255, 100, 80, 0.3);
+        }
+
+        .warning-box h3 {
+            color: #ff8866;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-box {
+            background: rgba(0, 200, 255, 0.1);
+            border-left: 4px solid #00ccff;
+            border-right: 4px solid transparent;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 200, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 15px 40px rgba(0, 200, 255, 0.3);
+        }
+
+        .info-box h3 {
+            color: #00ddff;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .success-box {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 4px solid #00ff88;
+            border-right: 4px solid transparent;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .success-box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .success-box h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .section {
+            background: rgba(0, 50, 0, 0.2);
+            padding: 35px;
+            margin: 30px 0;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.15);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 255, 136, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            color: #00ff88;
+            margin-bottom: 25px;
+            font-size: 2em;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(0, 255, 136, 0.3);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .section h3 {
+            color: #80ffaa;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .step {
+            background: rgba(0, 30, 0, 0.4);
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 15px;
+            border-left: 4px solid #00ff88;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .step:hover::before {
+            width: 100%;
+        }
+
+        .step:hover {
+            background: rgba(0, 40, 0, 0.6);
+            border-left-width: 6px;
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: #0a1f0a;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 15px;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        code {
+            background: rgba(0, 20, 0, 0.6);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            color: #00ff88;
+            font-size: 0.95em;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .code-block {
+            background: rgba(0, 20, 0, 0.8);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .code-block code {
+            background: none;
+            color: #00ffaa;
+            display: block;
+            padding: 0;
+            border: none;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        li {
+            margin: 12px 0;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        li::marker {
+            color: #00ff88;
+        }
+
+        a {
+            color: #00ff88;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00ff88;
+            transition: width 0.3s ease;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        a:hover {
+            color: #00ffcc;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: #0a1f0a;
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            margin: 15px 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+            border: 2px solid transparent;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .download-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5);
+            border-color: #00ff88;
+        }
+
+        .faq {
+            background: rgba(0, 30, 0, 0.3);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border-left: 4px solid #00ff88;
+            transition: all 0.3s ease;
+        }
+
+        .faq:hover {
+            background: rgba(0, 40, 0, 0.5);
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .faq strong {
+            color: #00ff88;
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.15em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 60px;
+            color: #80ffaa;
+            border-top: 2px solid rgba(0, 255, 136, 0.2);
+            background: rgba(0, 30, 0, 0.3);
+            border-radius: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+
+            .lang-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+            }
+
+            .lang-btn {
+                padding: 6px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <div class="lang-toggle">
+        <button class="lang-btn active" onclick="switchLang('en')">English</button>
+        <button class="lang-btn" onclick="switchLang('vi')">Tiếng Việt</button>
+    </div>
+
+    <div class="container">
+        <!-- English Version -->
+        <div id="content-en">
+            <header>
+                <h1>🚀 ALHACK VM Method</h1>
+                <p class="subtitle">Complete Guide: Run Valorant in a Virtual Machine with Hyper-V</p>
+                <p class="subtitle" style="margin-top: 10px; font-size: 0.9em;">VM METHOD</p>
+            </header>
+
+            <div class="warning-box">
+                <h3>⚠️ IMPORTANT REQUIREMENTS</h3>
+                <p>✓ Windows 10 or Windows 11 Pro Edition (activation guide included below)</p>
+                <p>✓ Hyper-V capable hardware (most modern CPUs support this)</p>
+                <p>✓ At least 16GB RAM recommended</p>
+                <p>✓ Dedicated GPU recommended for best performance</p>
+            </div>
+
+            <div class="section">
+                <h2>📝 Step 1: Activate Windows 10/11 Pro</h2>
+                <p>If you don't have Windows Pro activated, follow these steps to activate it for free using MAS (Microsoft Activation Scripts).</p>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Open PowerShell as Administrator</strong>
+                    <p>Right-click the Start button and select "Windows PowerShell (Admin)" or "Terminal (Admin)"</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Run the activation command</strong>
+                    <p>Copy and paste this command into PowerShell:</p>
+                    <div class="code-block">
+                        <code>irm https://get.activated.win | iex</code>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Follow the activation wizard</strong>
+                    <p>✓ Wait for a new command prompt window to open</p>
+                    <p>✓ Press <code>1</code> for Windows activation</p>
+                    <p>✓ You should see: "Windows 10 Pro is permanently activated with a digital license."</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>ℹ️ Alternative Command (if blocked by ISP/DNS)</h3>
+                    <div class="code-block">
+                        <code>iex (curl.exe -s --doh-url https://1.1.1.1/dns-query https://get.activated.win | Out-String)</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>⚙️ Step 2: Enable Hyper-V</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Open Windows Features</strong>
+                    <p>Press <code>Win + R</code>, type <code>optionalfeatures</code> and press Enter</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Enable required features</strong>
+                    <p>Check the following boxes:</p>
+                    <ul>
+                        <li><strong>Hyper-V</strong> (all sub-options)</li>
+                        <li><strong>Virtual Machine Platform</strong></li>
+                        <li><strong>Windows Subsystem for Linux</strong></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Apply and restart</strong>
+                    <p>Click OK and restart your PC when prompted</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🌐 Step 3: Create Virtual Network Switch</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Open Hyper-V Manager</strong>
+                    <p>Search for "Hyper-V Manager" in Start menu</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Create Virtual Switch</strong>
+                    <p>✓ Click "Virtual Switch Manager..." on the right panel</p>
+                    <p>✓ Select "External" and click "Create Virtual Switch"</p>
+                    <p>✓ Give it a name (e.g., "VM-Network")</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Configure network adapter</strong>
+                    <p>✓ Select your primary Network Controller (e.g., Intel Ethernet Controller)</p>
+                    <p>✓ <strong>⚠️ IMPORTANT:</strong> Check "Allow management operating system to share this network adapter"</p>
+                    <p>✓ Click OK to apply</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>💾 Step 4: Download GPU Partition Scripts</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Download the GPU-P scripts</strong>
+                    <p>Download the official GPU partitioning scripts from GitHub. The package contains:</p>
+                    <ul>
+                        <li><code>New-GPUPDriverPackage.ps1</code></li>
+                        <li><code>New-GPUPVirtualMachine.ps1</code></li>
+                        <li><code>readme.md</code></li>
+                    </ul>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <a href="https://gist.github.com/neggles/e35793da476095beac716c16ffba1d23/archive/4f12a6649f94f086778ce50a65fa4bfbd561cf22.zip" class="download-btn" target="_blank">
+                            📥 Download GPU-P Scripts (ZIP)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Extract the files</strong>
+                    <p>Extract the downloaded ZIP file to a location you can easily access (e.g., <code>C:\VM-Scripts</code>)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>(Optional) Customize VM settings</strong>
+                    <p>Open <code>New-GPUPVirtualMachine.ps1</code> with Notepad or Visual Studio Code to modify VM parameters like RAM, CPU cores, etc.</p>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h3>✅ Bypass HWID Bans</h3>
+                <p>If your main PC is HWID banned, you can use this VM method as a "2nd PC" to play on your main account:</p>
+                <ul>
+                    <li>Create the VM following this guide</li>
+                    <li>If the VM gets banned, simply delete it and create a new one</li>
+                    <li>Start from Step 5 (you don't need to redo Hyper-V setup)</li>
+                    <li>You'll have a "fresh" system each time without hardware bans affecting your host PC</li>
+                </ul>
+            </div>
+
+            <footer>
+                <p><strong>ALHACK VM Method</strong> - Free Guide</p>
+                <p style="margin-top: 10px; font-size: 0.9em;">For educational purposes only. Use at your own risk.</p>
+                <p style="margin-top: 15px; color: #00ff88;">Powered by ALHACK 💚</p>
+            </footer>
+        </div>
+
+        <!-- Vietnamese Version -->
+        <div id="content-vi" class="hidden">
+            <header>
+                <h1>🚀 ALHACK Phương Pháp VM</h1>
+                <p class="subtitle">Hướng Dẫn Đầy Đủ: Chạy Valorant trong Máy Ảo với Hyper-V</p>
+                <p class="subtitle" style="margin-top: 10px; font-size: 0.9em;">PHƯƠNG PHÁP CHẠY MÁY ẢO CHẤP 152</p>
+            </header>
+
+            <div class="warning-box">
+                <h3>⚠️ YÊU CẦU QUAN TRỌNG</h3>
+                <p>✓ Windows 10 hoặc Windows 11 Pro Edition (hướng dẫn kích hoạt bên dưới)</p>
+                <p>✓ Phần cứng hỗ trợ Hyper-V (hầu hết CPU hiện đại đều hỗ trợ)</p>
+                <p>✓ Khuyến nghị ít nhất 16GB RAM</p>
+                <p>✓ Khuyến nghị GPU rời để có hiệu suất tốt nhất</p>
+            </div>
+
+            <div class="section">
+                <h2>📝 Bước 1: Kích Hoạt Windows 10/11 Pro</h2>
+                <p>Nếu bạn chưa kích hoạt Windows Pro, hãy làm theo các bước sau để kích hoạt miễn phí bằng MAS (Microsoft Activation Scripts).</p>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Mở PowerShell với quyền Administrator</strong>
+                    <p>Nhấp chuột phải vào nút Start và chọn "Windows PowerShell (Admin)" hoặc "Terminal (Admin)"</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Chạy lệnh kích hoạt</strong>
+                    <p>Sao chép và dán lệnh này vào PowerShell:</p>
+                    <div class="code-block">
+                        <code>irm https://get.activated.win | iex</code>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Làm theo trình hướng dẫn kích hoạt</strong>
+                    <p>✓ Đợi cửa sổ command prompt mới mở ra</p>
+                    <p>✓ Nhấn <code>1</code> để kích hoạt Windows</p>
+                    <p>✓ Bạn sẽ thấy: "Windows 10 Pro is permanently activated with a digital license."</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>ℹ️ Lệnh Thay Thế (nếu bị ISP/DNS chặn)</h3>
+                    <div class="code-block">
+                        <code>iex (curl.exe -s --doh-url https://1.1.1.1/dns-query https://get.activated.win | Out-String)</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>⚙️ Bước 2: Bật Hyper-V</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Mở Windows Features</strong>
+                    <p>Nhấn <code>Win + R</code>, gõ <code>optionalfeatures</code> và nhấn Enter</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Bật các tính năng cần thiết</strong>
+                    <p>Đánh dấu các ô sau:</p>
+                    <ul>
+                        <li><strong>Hyper-V</strong> (tất cả tùy chọn phụ)</li>
+                        <li><strong>Virtual Machine Platform</strong></li>
+                        <li><strong>Windows Subsystem for Linux</strong></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Áp dụng và khởi động lại</strong>
+                    <p>Nhấp OK và khởi động lại PC khi được nhắc</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🌐 Bước 3: Tạo Virtual Network Switch</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Mở Hyper-V Manager</strong>
+                    <p>Tìm kiếm "Hyper-V Manager" trong menu Start</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Tạo Virtual Switch</strong>
+                    <p>✓ Nhấp "Virtual Switch Manager..." ở bảng bên phải</p>
+                    <p>✓ Chọn "External" và nhấp "Create Virtual Switch"</p>
+                    <p>✓ Đặt tên (ví dụ: "VM-Network")</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Cấu hình network adapter</strong>
+                    <p>✓ Chọn Network Controller chính của bạn (ví dụ: Intel Ethernet Controller)</p>
+                    <p>✓ <strong>⚠️ QUAN TRỌNG:</strong> Đánh dấu "Allow management operating system to share this network adapter"</p>
+                    <p>✓ Nhấp OK để áp dụng</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>💾 Bước 4: Tải GPU Partition Scripts</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Tải scripts GPU-P</strong>
+                    <p>Tải các script phân vùng GPU chính thức từ GitHub. Gói bao gồm:</p>
+                    <ul>
+                        <li><code>New-GPUPDriverPackage.ps1</code></li>
+                        <li><code>New-GPUPVirtualMachine.ps1</code></li>
+                        <li><code>readme.md</code></li>
+                    </ul>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <a href="https://gist.github.com/neggles/e35793da476095beac716c16ffba1d23/archive/4f12a6649f94f086778ce50a65fa4bfbd561cf22.zip" class="download-btn" target="_blank">
+                            📥 Tải GPU-P Scripts (ZIP)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Giải nén các file</strong>
+                    <p>Giải nén file ZIP đã tải về vào vị trí dễ truy cập (ví dụ: <code>C:\VM-Scripts</code>)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>(Tùy chọn) Tùy chỉnh cài đặt VM</strong>
+                    <p>Mở <code>New-GPUPVirtualMachine.ps1</code> bằng Notepad hoặc Visual Studio Code để sửa đổi các thông số VM như RAM, CPU cores, v.v.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🖥️ Bước 5: Tạo Virtual Machine</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Mở PowerShell với quyền Administrator</strong>
+                    <p>Nhấp chuột phải Start → Windows PowerShell (Admin)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Đặt execution policy</strong>
+                    <div class="code-block">
+                        <code>Set-ExecutionPolicy Bypass</code>
+                    </div>
+                    <p>Xác nhận bằng cách gõ <code>Y</code> và nhấn Enter</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Di chuyển đến thư mục scripts</strong>
+                    <div class="code-block">
+                        <code>cd C:\VM-Scripts</code>
+                    </div>
+                    <p>Thay thế bằng đường dẫn thực tế của bạn. Xác minh bằng lệnh <code>ls</code>.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Thực thi script tạo VM</strong>
+                    <div class="code-block">
+                        <code>.\New-GPUPVirtualMachine.ps1</code>
+                    </div>
+                    <p>Đợi script hoàn thành. Bạn sẽ thấy VM mới tên "GPU-VM" trong Hyper-V Manager.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>⚙️ Bước 6: Cấu Hình Virtual Machine</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Mở VM Settings</strong>
+                    <p>Trong Hyper-V Manager, nhấp chuột phải "GPU-VM" → Settings</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Điều chỉnh Memory và Processor</strong>
+                    <p>✓ <strong>Memory:</strong> Phân bổ ít nhất 8GB (8192 MB) hoặc nhiều hơn</p>
+                    <p>✓ <strong>Processor:</strong> Gán ít nhất 4 cores</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Gắn Network Adapter</strong>
+                    <p>✓ Đi đến phần "Network Adapter"</p>
+                    <p>✓ Chọn Virtual Switch đã tạo trước đó</p>
+                    <p>✓ Nhấp Apply</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>💿 Bước 7: Cài Windows 10 trong VM</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Tải Windows 10 ISO</strong>
+                    <p>Tải từ <a href="https://www.microsoft.com/software-download/windows10" target="_blank">trang web chính thức của Microsoft</a></p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Thêm ISO vào VM</strong>
+                    <p>Trong VM Settings:</p>
+                    <ul>
+                        <li>Đi đến "SCSI Controller"</li>
+                        <li>Chọn "DVD Drive" → Add</li>
+                        <li>Chọn "Image file" và duyệt đến file Windows 10 ISO của bạn</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Tạo Virtual Hard Drive</strong>
+                    <p>Vẫn trong "SCSI Controller" settings:</p>
+                    <ul>
+                        <li>Chọn "Hard Drive" → Add → New</li>
+                        <li>Chọn "Dynamically expanding" hoặc "Fixed size"</li>
+                        <li>Đặt kích thước ít nhất 80GB (khuyến nghị: 120GB+)</li>
+                        <li>Ở bước 4, chọn "Create a new blank virtual hard disk"</li>
+                        <li>Hoàn thành wizard</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Đặt Boot Order</strong>
+                    <p>Đi đến phần "Firmware" và sắp xếp thứ tự khởi động:</p>
+                    <ol>
+                        <li>DVD Drive (Windows 10 ISO)</li>
+                        <li>Hard Drive</li>
+                    </ol>
+                    <p>Nhấp Apply → OK</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <strong>Khởi động VM và Cài Windows</strong>
+                    <p>✓ Nhấp đúp vào VM trong Hyper-V Manager</p>
+                    <p>✓ Nhấp "Start"</p>
+                    <p>✓ <strong>⚠️ QUAN TRỌNG:</strong> Trong quá trình cài đặt, chọn phiên bản <strong>Windows 10 Pro</strong></p>
+                    <p>✓ Hoàn thành quá trình cài đặt Windows</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎮 Bước 8: Cài GPU Drivers trong VM</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Tạo gói driver (trên PC chính)</strong>
+                    <p>Trong khi Windows đang cài trong VM, quay lại PowerShell trên PC chính:</p>
+                    <div class="code-block">
+                        <code>cd C:\VM-Scripts</code>
+                        <code>.\New-GPUPDriverPackage.ps1</code>
+                    </div>
+                    <p>Đợi hoàn thành. Bạn sẽ thấy: "Driver package generation complete."</p>
+                    <p>File ZIP mới sẽ xuất hiện trong thư mục scripts.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Tải lên gói driver</strong>
+                    <p>✓ Tải file ZIP đã tạo lên dịch vụ chia sẻ file (ví dụ: GoFile, MEGA, Google Drive)</p>
+                    <p>✓ Lấy link tải xuống</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Tải xuống và giải nén trong VM</strong>
+                    <p>Sau khi cài Windows xong trong VM:</p>
+                    <ul>
+                        <li>Mở trình duyệt trong VM</li>
+                        <li>Tải file ZIP driver</li>
+                        <li>Giải nén các thư mục từ ZIP trực tiếp vào <code>C:\Windows</code></li>
+                        <li><strong>⚠️ QUAN TRỌNG:</strong> Thay thế file khi được nhắc</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Tắt VM</strong>
+                    <p>Tắt VM hoàn toàn (không phải restart)</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🔧 Bước 9: Bật Nested Virtualization</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Chạy lệnh trên PC chính</strong>
+                    <p>Mở PowerShell với quyền Administrator trên PC chính và chạy:</p>
+                    <div class="code-block">
+                        <code>Set-VMProcessor -VMName GPU-VM -ExposeVirtualizationExtensions $true</code>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Khởi động VM và bật Hyper-V bên trong VM</strong>
+                    <p>✓ Khởi động VM</p>
+                    <p>✓ Bên trong VM, nhấn Win + R, gõ <code>optionalfeatures</code></p>
+                    <p>✓ Bật <strong>Hyper-V</strong> (tất cả thành phần)</p>
+                    <p>✓ Bật <strong>Virtual Machine Platform</strong></p>
+                    <p>✓ Nhấp OK và khởi động lại VM</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>✅ Bước 10: Xác Minh và Thiết Lập Cuối Cùng</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Kiểm tra phát hiện ảo hóa</strong>
+                    <p>Sau khi VM khởi động lại:</p>
+                    <ul>
+                        <li>Mở Task Manager trong VM</li>
+                        <li>Đi đến tab Performance → CPU</li>
+                        <li><strong>✓ THÀNH CÔNG:</strong> "Virtualization: Yes" KHÔNG nên hiển thị "Virtual Computer: Yes"</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Cài Cloudflare WARP (QUAN TRỌNG)</strong>
+                    <p>✓ Tải và cài <a href="https://1.1.1.1/" target="_blank">Cloudflare WARP</a> trong VM</p>
+                    <p>✓ Bật WARP trước khi khởi chạy Valorant</p>
+                    <p>✓ <strong>⚠️ Điều này ngăn crash!</strong></p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Cài Valorant</strong>
+                    <p>✓ Cài Riot Vanguard và Valorant bình thường trong VM</p>
+                    <p>✓ Khởi chạy và tận hưởng!</p>
+                </div>
+
+                <div class="warning-box">
+                    <h3>⚠️ KHÔNG BẬT TPM MODULE</h3>
+                    <p>Không bật TPM trong cài đặt VM. Điều này sẽ khiến Vanguard phát hiện VM!</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>❓ Vấn Đề Thường Gặp & FAQ</h2>
+                
+                <div class="faq">
+                    <strong>H: Tôi gặp lỗi kết nối video khi kết nối VM</strong>
+                    <p><strong>Đ:</strong> Tiếp tục nhấp "Reconnect" nhiều lần. Đây là vấn đề Hyper-V phổ biến thường được giải quyết sau vài lần thử.</p>
+                </div>
+
+                <div class="faq">
+                    <strong>H: Valorant crash vài phút sau khi khởi động</strong>
+                    <p><strong>Đ:</strong> Đảm bảo Cloudflare WARP đã bật. Cũng xác minh rằng:</p>
+                    <ul>
+                        <li>TPM KHÔNG được bật trong cài đặt VM</li>
+                        <li>Bạn đã bật "Virtual Machine Platform" trong Windows features (bên trong VM)</li>
+                        <li>Secure Boot, TPM, và HVCI được cấu hình đúng</li>
+                    </ul>
+                </div>
+
+                <div class="faq">
+                    <strong>H: Tôi thấy lỗi "A D3D11-compatible GPU is required"</strong>
+                    <p><strong>Đ:</strong> Điều này có nghĩa là phân vùng GPU không hoạt động đúng. Xác minh:</p>
+                    <ul>
+                        <li>Gói driver GPU đã được giải nén đúng vào C:\Windows</li>
+                        <li>Bạn đã chạy lệnh Set-VMProcessor</li>
+                        <li>GPU của bạn hỗ trợ phân vùng (hầu hết GPU hiện đại đều có)</li>
+                    </ul>
+                </div>
+
+                <div class="faq">
+                    <strong>H: VM rất lag hoặc chậm</strong>
+                    <p><strong>Đ:</strong> Phân bổ thêm tài nguyên:</p>
+                    <ul>
+                        <li>Tăng RAM lên 12GB+ nếu có thể</li>
+                        <li>Gán thêm CPU cores (khuyến nghị 6-8)</li>
+                        <li>Đảm bảo PC chính không chạy các chương trình tốn nhiều tài nguyên</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h3>✅ Vượt Qua HWID Ban</h3>
+                <p>Nếu PC chính của bạn bị HWID ban, bạn có thể dùng phương pháp VM này như "PC thứ 2" để chơi tài khoản chính:</p>
+                <ul>
+                    <li>Tạo VM theo hướng dẫn này</li>
+                    <li>Nếu VM bị ban, chỉ cần xóa nó và tạo cái mới</li>
+                    <li>Bắt đầu từ Bước 5 (không cần làm lại thiết lập Hyper-V)</li>
+                    <li>Bạn sẽ có hệ thống "mới" mỗi lần mà không ảnh hưởng đến PC chính</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>💡 Mẹo & Thực Hành Tốt Nhất</h2>
+                <ul>
+                    <li><strong>Hiệu suất:</strong> Đóng các chương trình không cần thiết trên PC chính khi chơi</li>
+                    <li><strong>Cập nhật:</strong> Giữ Windows được cập nhật ở cả PC chính và VM</li>
+                    <li><strong>Sao lưu:</strong> Tạo VM snapshots trước các thay đổi lớn</li>
+                    <li><strong>Mạng:</strong> Dùng ethernet có dây để có hiệu suất tốt nhất</li>
+                    <li><strong>Lưu trữ:</strong> Cài VM trên SSD để tải nhanh hơn</li>
+                </ul>
+            </div>
+
+            <footer>
+                <p><strong>ALHACK Phương Pháp VM</strong> - Hướng Dẫn Miễn Phí</p>
+                <p style="margin-top: 10px; font-size: 0.9em;">Chỉ cho mục đích giáo dục. Sử dụng với rủi ro của riêng bạn.</p>
+                <p style="margin-top: 15px; color: #00ff88;">Được hỗ trợ bởi ALHACK 💚</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        //const cursorFollower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }, 100);
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('active');
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('active');
+        });
+
+        // Language switcher
+        function switchLang(lang) {
+            const enContent = document.getElementById('content-en');
+            const viContent = document.getElementById('content-vi');
+            const enBtn = document.querySelector('.lang-btn:first-child');
+            const viBtn = document.querySelector('.lang-btn:last-child');
+
+            if (lang === 'en') {
+                enContent.classList.remove('hidden');
+                viContent.classList.add('hidden');
+                enBtn.classList.add('active');
+                viBtn.classList.remove('active');
+            } else {
+                enContent.classList.add('hidden');
+                viContent.classList.remove('hidden');
+                enBtn.classList.remove('active');
+                viBtn.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
