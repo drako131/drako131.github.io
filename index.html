@@ -8,6 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollToPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+
     <style>
         :root {
             --bg-color: #050507;
@@ -28,7 +36,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: auto; }
         body {
             font-family: var(--font-body);
             background-color: var(--bg-color);
@@ -39,6 +47,10 @@
             -webkit-font-smoothing: antialiased;
         }
         a, button, .btn, .tab-btn { cursor: none; }
+
+        /* ─── Lenis ─── */
+        html.lenis, html.lenis body { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
         /* ─── Backgrounds ─── */
         .aurora-background {
@@ -107,8 +119,8 @@
 
         /* ─── Layout ─── */
         .container { width: 90%; max-width: 1140px; margin: 0 auto; position: relative; z-index: 2; }
-        .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-        .animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+        /* GSAP handles all scroll animations */
+        .animate-on-scroll { will-change: transform, opacity; }
         .section { padding: 100px 0; }
         .section-header { text-align: center; margin-bottom: 4rem; }
         .section-header h2 {
@@ -221,13 +233,18 @@
         .hero-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 
         /* ─── Features ─── */
-        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        .features-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+            perspective: 1200px;
+        }
         .feature-card {
             background: var(--surface-color);
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 2rem; border-radius: 16px; text-align: left;
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            transition: all 0.35s ease; position: relative; overflow: hidden;
+            transition: border-color 0.35s ease, box-shadow 0.35s ease;
+            position: relative; overflow: hidden;
+            transform-style: preserve-3d; will-change: transform;
         }
         .feature-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
@@ -235,7 +252,6 @@
             opacity: 0; transition: opacity 0.35s ease;
         }
         .feature-card:hover {
-            transform: translateY(-4px);
             border-color: rgba(255, 23, 68, 0.15);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px var(--glow-red-soft);
         }
@@ -284,17 +300,17 @@
         .store-cta h2 span { color: var(--primary-red); }
         .store-cta p { color: var(--text-muted); max-width: 550px; margin: 0 auto 2rem auto; font-size: 1.05rem; line-height: 1.7; }
 
-        /* ─── Pricing ─── */
+       
         .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; max-width: 400px; margin: 0 auto; }
         .price-card {
             background: var(--surface-color);
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 2rem 1.5rem; border-radius: 16px; text-align: center;
-            transition: all 0.35s ease; position: relative;
+            transition: border-color 0.35s ease, box-shadow 0.35s ease;
+            position: relative;
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         }
         .price-card:hover {
-            transform: translateY(-6px);
             border-color: rgba(255, 23, 68, 0.2);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
@@ -323,7 +339,6 @@
         }
         .price-card .btn { width: 100%; justify-content: center; padding: 12px 20px; font-size: 0.88rem; }
 
-        /* ─── Community ─── */
         .community-cta {
             text-align: center; padding: 4rem;
             background: var(--surface-color);
@@ -343,7 +358,7 @@
             transform: translateY(-2px);
         }
 
-        /* ─── Footer ─── */
+     
         .main-footer {
             padding: 3rem 0 2rem 0; text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.04); margin-top: 60px;
@@ -354,7 +369,61 @@
         .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
         .footer-links a { color: var(--text-muted); font-size: 0.85rem; }
 
-        /* ─── Responsive ─── */
+      
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-red), #FF6B6B, var(--primary-red));
+            background-size: 200% 100%;
+            animation: progress-glow 3s ease infinite;
+            z-index: 10002;
+            box-shadow: 0 0 15px var(--glow-red), 0 0 5px var(--primary-red);
+            pointer-events: none;
+        }
+        @keyframes progress-glow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+     
+        .entrance-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            clip-path: inset(0 0 0 0);
+        }
+        .entrance-logo {
+            font-family: var(--font-heading);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--text-color);
+            letter-spacing: -2px;
+            opacity: 0;
+            will-change: transform, opacity, filter;
+        }
+        .entrance-logo .accent { color: var(--primary-red); }
+        .entrance-scanline {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-red), transparent);
+            opacity: 0;
+            top: 50%;
+            box-shadow: 0 0 20px var(--glow-red), 0 0 60px var(--glow-red);
+        }
+
+  
+        .word { display: inline-block !important; will-change: transform, opacity; }
+        .char { display: inline-block !important; will-change: transform, opacity; }
+
+     
         @media (max-width: 900px) {
             .features-grid { grid-template-columns: 1fr 1fr; }
             .pricing-grid { grid-template-columns: 1fr 1fr; }
@@ -372,9 +441,36 @@
             .store-cta, .community-cta { padding: 2.5rem 1.5rem; }
             .hero-actions { flex-direction: column; align-items: center; }
         }
+
+        /* ─── Reduced motion ─── */
+        @media (prefers-reduced-motion: reduce) {
+            .entrance-overlay { display: none !important; }
+            .scroll-progress { display: none !important; }
+        }
     </style>
 </head>
 <body>
+
+   
+    <div class="entrance-overlay" id="entranceOverlay">
+        <div class="entrance-logo">Gaming<span class="accent">Eyes</span></div>
+        <div class="entrance-scanline"></div>
+    </div>
+
+    <!-- Safety: remove overlay if scripts fail to load -->
+    <script>
+        window.__overlayTimeout = setTimeout(function() {
+            var ov = document.getElementById('entranceOverlay');
+            if (ov) ov.style.display = 'none';
+            document.querySelectorAll('.animate-on-scroll, .feature-card, .video-container, .store-cta, .price-card, .community-cta, .main-header, .main-footer, .hero-badge, .hero h1, .hero p, .hero-actions .btn').forEach(function(el) {
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+        }, 5000);
+    </script>
+
+   
+    <div class="scroll-progress" id="scrollProgress"></div>
 
     <div class="aurora-background"></div>
     <div class="grid-background"></div>
@@ -440,7 +536,7 @@
                     <p>Built different. Designed to dominate.</p>
                 </div>
                 <div class="features-grid">
-                    <div class="feature-card animate-on-scroll" style="transition-delay: 100ms;">
+                    <div class="feature-card animate-on-scroll">
                         <div class="feature-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.032z"/></svg>
                         </div>
@@ -451,14 +547,14 @@
                             <span class="online">99.9% Online</span>
                         </div>
                     </div>
-                    <div class="feature-card animate-on-scroll" style="transition-delay: 200ms;">
+                    <div class="feature-card animate-on-scroll">
                         <div class="feature-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
                         </div>
                         <h3>Trusted Community</h3>
                         <p>Join thousands of satisfied users. Check our vouches for verified real testimonials.</p>
                     </div>
-                    <div class="feature-card animate-on-scroll" style="transition-delay: 300ms;">
+                    <div class="feature-card animate-on-scroll">
                         <div class="feature-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/></svg>
                         </div>
@@ -473,7 +569,7 @@
                 <div class="section-header animate-on-scroll">
                     <h2>See It In <span style="color: var(--primary-red)">Action</span></h2>
                 </div>
-                <div class="video-container animate-on-scroll" style="transition-delay: 100ms;">
+                <div class="video-container animate-on-scroll">
                     <div style="position:relative; width:100%; height:0px; padding-bottom:56.250%">
                         <iframe allow="fullscreen" allowfullscreen height="100%" src="https://streamable.com/e/4uwent?" width="100%" style="border:none; width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden;"></iframe>
                     </div>
@@ -499,7 +595,7 @@
                     <p>Choose the plan that fits your needs.</p>
                 </div>
                 <div class="pricing-grid">
-                    <div class="price-card highlight animate-on-scroll" style="transition-delay: 400ms;">
+                    <div class="price-card highlight animate-on-scroll">
                         <div class="best-value-tag">⚡ Premium</div>
                         <div class="duration">Lifetime</div>
                         <div class="price" style="font-size: 2rem; letter-spacing: 0;">∞</div>
@@ -552,12 +648,424 @@
     </footer>
 
     <script>
-        // Clean URL: redirect /index.html to /
-        if (window.location.pathname.endsWith('/index.html')) {
+        // Clean URL: redirect /index.html to / (only on web servers, not file://)
+        if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('/index.html')) {
             window.location.replace(window.location.pathname.replace('/index.html', '/') + window.location.hash);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+
+            // Cancel safety timeout — scripts loaded fine
+            if (window.__overlayTimeout) clearTimeout(window.__overlayTimeout);
+
+          
+            gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const isMobile = window.innerWidth <= 768;
+
+         
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smoothWheel: true,
+                wheelMultiplier: 1,
+                touchMultiplier: 2,
+            });
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => lenis.raf(time * 1000));
+            gsap.ticker.lagSmoothing(0);
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = document.querySelector(anchor.getAttribute('href'));
+                    if (target) lenis.scrollTo(target, { offset: -80 });
+                });
+            });
+
+        
+            gsap.to('.scroll-progress', {
+                width: '100%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.documentElement,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.3,
+                }
+            });
+
+            gsap.set('.main-header', { yPercent: -100, opacity: 0 });
+            gsap.set('.hero-badge', { opacity: 0, y: 40, scale: 0.7 });
+            gsap.set('.hero h1', { opacity: 0, y: 100, skewY: 3 });
+            gsap.set('.hero p', { opacity: 0, y: 50 });
+            gsap.set('.hero-actions .btn', { opacity: 0, y: 40, scale: 0.7 });
+
+           
+            gsap.set('.feature-card', { opacity: 0, y: 100, rotateX: 25, scale: 0.85 });
+            gsap.set('.video-container', { opacity: 0, y: 120, scale: 0.8 });
+            gsap.set('.store-cta', { opacity: 0, x: -150, rotateY: 12 });
+            gsap.set('.price-card', { opacity: 0, scale: 0, rotateZ: -15, y: 80 });
+            gsap.set('.community-cta', { opacity: 0, x: 150, rotateY: -12 });
+            gsap.set('.main-footer', { opacity: 0, y: 40 });
+
+           
+            if (prefersReducedMotion) {
+                // Immediately show everything
+                gsap.set('.entrance-overlay', { autoAlpha: 0, display: 'none' });
+                gsap.set(['.main-header', '.hero-badge', '.hero h1', '.hero p'],
+                    { clearProps: 'all' });
+                gsap.set('.hero-actions .btn', { clearProps: 'all' });
+                gsap.set(['.feature-card', '.video-container', '.store-cta',
+                    '.price-card', '.community-cta', '.main-footer'],
+                    { clearProps: 'all' });
+            } else {
+                const entrance = gsap.timeline({ delay: 0.2 });
+
+                entrance
+                    // Logo fades in
+                    .to('.entrance-logo', {
+                        opacity: 1,
+                        duration: 0.7,
+                        ease: 'power2.out'
+                    })
+                    // Scanline sweeps across
+                    .to('.entrance-scanline', {
+                        opacity: 1,
+                        top: '0%',
+                        duration: 0.6,
+                        ease: 'power2.inOut',
+                    }, '+=0.2')
+                    .to('.entrance-scanline', {
+                        top: '100%',
+                        duration: 0.6,
+                        ease: 'power2.inOut',
+                    })
+                    // Logo glitch shakes
+                    .to('.entrance-logo', {
+                        x: () => gsap.utils.random(-12, 12),
+                        textShadow: '3px 0 #FF1744, -3px 0 #FF6B6B',
+                        duration: 0.04,
+                        repeat: 10,
+                        yoyo: true,
+                        ease: 'steps(1)',
+                    }, '-=0.4')
+                    .set('.entrance-logo', { textShadow: 'none', x: 0 })
+                    // Logo scales out with blur
+                    .to('.entrance-logo', {
+                        opacity: 0,
+                        scale: 2.5,
+                        filter: 'blur(30px)',
+                        duration: 0.5,
+                        ease: 'power3.in'
+                    }, '+=0.1')
+                    // Overlay splits/slides away
+                    .to('.entrance-overlay', {
+                        clipPath: 'inset(0 0 100% 0)',
+                        duration: 1,
+                        ease: 'power4.inOut',
+                    })
+                    // Header drops in
+                    .to('.main-header', {
+                        yPercent: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power3.out'
+                    }, '-=0.5')
+                    // Hero badge bounces in
+                    .to('.hero-badge', {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.8,
+                        ease: 'back.out(1.7)'
+                    }, '-=0.4')
+                    // Hero heading sweeps up
+                    .to('.hero h1', {
+                        opacity: 1,
+                        y: 0,
+                        skewY: 0,
+                        duration: 1.2,
+                        ease: 'power4.out'
+                    }, '-=0.5')
+                    // Hero paragraph
+                    .to('.hero p', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power3.out'
+                    }, '-=0.6')
+                    // Buttons stagger in with bounce
+                    .to('.hero-actions .btn', {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        stagger: 0.2,
+                        duration: 0.7,
+                        ease: 'back.out(1.7)'
+                    }, '-=0.5')
+                    // Start subtle floating animation on badge
+                    .add(() => {
+                        gsap.to('.hero-badge', {
+                            y: -10,
+                            duration: 2.5,
+                            ease: 'sine.inOut',
+                            yoyo: true,
+                            repeat: -1,
+                        });
+                    });
+            }
+
+            if (typeof SplitType !== 'undefined' && !prefersReducedMotion) {
+                document.querySelectorAll('.section-header h2').forEach(h2 => {
+                    try {
+                        const split = new SplitType(h2, { types: 'words' });
+                        gsap.set(split.words, { opacity: 0, y: 60, rotateX: -90, transformOrigin: 'center bottom' });
+
+                        ScrollTrigger.create({
+                            trigger: h2.closest('.section-header') || h2,
+                            start: 'top 82%',
+                            once: true,
+                            onEnter: () => {
+                                gsap.to(split.words, {
+                                    opacity: 1,
+                                    y: 0,
+                                    rotateX: 0,
+                                    duration: 0.9,
+                                    stagger: 0.07,
+                                    ease: 'back.out(1.4)',
+                                });
+                            }
+                        });
+                    } catch(e) {
+                        // SplitType fallback — fade in normally
+                        gsap.set(h2, { opacity: 0, y: 30 });
+                        ScrollTrigger.create({
+                            trigger: h2, start: 'top 82%', once: true,
+                            onEnter: () => gsap.to(h2, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+                        });
+                    }
+                });
+
+                document.querySelectorAll('.section-header p').forEach(p => {
+                    gsap.set(p, { opacity: 0, y: 30 });
+                    ScrollTrigger.create({
+                        trigger: p.closest('.section-header') || p,
+                        start: 'top 78%',
+                        once: true,
+                        onEnter: () => {
+                            gsap.to(p, { opacity: 1, y: 0, duration: 0.7, delay: 0.3, ease: 'power3.out' });
+                        }
+                    });
+                });
+            }
+
+           
+            const featureCards = gsap.utils.toArray('.feature-card');
+
+            featureCards.forEach((card, i) => {
+                ScrollTrigger.create({
+                    trigger: card,
+                    start: 'top 88%',
+                    once: true,
+                    onEnter: () => {
+                        gsap.to(card, {
+                            opacity: 1,
+                            y: 0,
+                            rotateX: 0,
+                            scale: 1,
+                            duration: 1,
+                            delay: i * 0.2,
+                            ease: 'power3.out',
+                        });
+                    }
+                });
+
+                // 3D tilt on hover (desktop only)
+                if (!isMobile) {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotX = ((y - centerY) / centerY) * -12;
+                        const rotY = ((x - centerX) / centerX) * 12;
+
+                        gsap.to(card, {
+                            rotateX: rotX,
+                            rotateY: rotY,
+                            duration: 0.4,
+                            ease: 'power2.out',
+                            transformPerspective: 800,
+                        });
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        gsap.to(card, {
+                            rotateX: 0,
+                            rotateY: 0,
+                            duration: 0.8,
+                            ease: 'elastic.out(1, 0.4)',
+                        });
+                    });
+                }
+            });
+
+           
+            ScrollTrigger.create({
+                trigger: '.video-container',
+                start: 'top 85%',
+                once: true,
+                onEnter: () => {
+                    gsap.to('.video-container', {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 1.4,
+                        ease: 'power3.out',
+                    });
+                }
+            });
+
+          
+            ScrollTrigger.create({
+                trigger: '.store-cta',
+                start: 'top 82%',
+                once: true,
+                onEnter: () => {
+                    gsap.to('.store-cta', {
+                        opacity: 1,
+                        x: 0,
+                        rotateY: 0,
+                        duration: 1.2,
+                        ease: 'power3.out',
+                    });
+                }
+            });
+
+        
+            ScrollTrigger.create({
+                trigger: '.price-card',
+                start: 'top 85%',
+                once: true,
+                onEnter: () => {
+                    gsap.to('.price-card', {
+                        opacity: 1,
+                        scale: 1,
+                        y: 0,
+                        rotateZ: 0,
+                        duration: 1,
+                        ease: 'back.out(1.7)',
+                    });
+                }
+            });
+
+          
+            ScrollTrigger.create({
+                trigger: '.community-cta',
+                start: 'top 82%',
+                once: true,
+                onEnter: () => {
+                    gsap.to('.community-cta', {
+                        opacity: 1,
+                        x: 0,
+                        rotateY: 0,
+                        duration: 1.2,
+                        ease: 'power3.out',
+                    });
+                }
+            });
+
+         
+            ScrollTrigger.create({
+                trigger: '.main-footer',
+                start: 'top 92%',
+                once: true,
+                onEnter: () => {
+                    gsap.to('.main-footer', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power3.out'
+                    });
+                }
+            });
+
+          
+            if (!prefersReducedMotion) {
+                gsap.to('.hero-content', {
+                    y: -200,
+                    opacity: 0,
+                    scale: 0.9,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '.hero',
+                        start: 'center center',
+                        end: 'bottom top',
+                        scrub: true,
+                    }
+                });
+            }
+
+         
+            if (!prefersReducedMotion) {
+                gsap.to('.aurora-background', {
+                    yPercent: -25,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: document.documentElement,
+                        start: 'top top',
+                        end: 'bottom bottom',
+                        scrub: true,
+                    }
+                });
+
+                gsap.to('.grid-background', {
+                    yPercent: -12,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: document.documentElement,
+                        start: 'top top',
+                        end: 'bottom bottom',
+                        scrub: true,
+                    }
+                });
+            }
+
+            // ═══════════════════════════════════════════════
+            //  MAGNETIC BUTTONS (Desktop Only)
+            // ═══════════════════════════════════════════════
+            if (!isMobile) {
+                document.querySelectorAll('.btn').forEach(btn => {
+                    btn.addEventListener('mousemove', (e) => {
+                        const rect = btn.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+
+                        gsap.to(btn, {
+                            x: x * 0.4,
+                            y: y * 0.4,
+                            duration: 0.3,
+                            ease: 'power2.out',
+                        });
+                    });
+
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, {
+                            x: 0,
+                            y: 0,
+                            duration: 0.7,
+                            ease: 'elastic.out(1, 0.3)',
+                        });
+                    });
+                });
+            }
+
+         
             const bgCanvas = document.getElementById('background-canvas');
             const bgCtx = bgCanvas.getContext('2d');
             const cursorCanvas = document.getElementById('cursor-canvas');
@@ -631,9 +1139,9 @@
             }
 
             function initBackground() {
-                const isMobile = window.innerWidth <= 768;
+                const isMobileCanvas = window.innerWidth <= 768;
                 particles = [];
-                for (let i = 0; i < (isMobile ? 30 : 80); i++) particles.push(new FloatingParticle());
+                for (let i = 0; i < (isMobileCanvas ? 30 : 80); i++) particles.push(new FloatingParticle());
                 let columnCount = Math.floor(bgCanvas.width / FONT_SIZE);
                 digitalRain = [];
                 for (let i = 0; i < columnCount; i++) digitalRain.push(new RainColumn(i * FONT_SIZE));
@@ -698,7 +1206,7 @@
             initBackground();
             masterAnimate();
 
-            // Audio
+          
             const audioToggle = document.getElementById('audioToggle');
             const bgMusic = document.getElementById('bgMusic');
             const playIcon = document.getElementById('playIcon');
@@ -716,17 +1224,6 @@
                 }
                 isPlaying = !isPlaying;
             });
-
-            // Scroll animations
-            const scrollObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
         });
     </script>
 </body>
