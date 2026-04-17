@@ -1042,13 +1042,24 @@
                                     iframe.allowFullscreen = true;
                                     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
                                     mediaEl.appendChild(iframe);
-                                    if (playOverlay) gsap.to(playOverlay, { opacity: 0, duration: 0.3 });
+                                    if (playOverlay) {
+                                        playOverlay.style.display = 'none';
+                                        playOverlay.style.pointerEvents = 'none';
+                                    }
+                                    const fsBtn = mediaEl.querySelector('.slide-fullscreen');
+                                    if (fsBtn) fsBtn.style.display = 'none';
                                 }
                             }, animate ? 400 : 0);
                         } else if (posIdx !== 1 && type === 'youtube') {
                             const existingIframe = mediaEl.querySelector('iframe');
                             if (existingIframe) existingIframe.remove();
-                            if (playOverlay) gsap.to(playOverlay, { opacity: 1, duration: 0.3 });
+                            if (playOverlay) {
+                                playOverlay.style.display = '';
+                                playOverlay.style.pointerEvents = '';
+                                gsap.to(playOverlay, { opacity: 1, duration: 0.3 });
+                            }
+                            const fsBtn = mediaEl.querySelector('.slide-fullscreen');
+                            if (fsBtn) fsBtn.style.display = '';
                         }
                     });
                 }
