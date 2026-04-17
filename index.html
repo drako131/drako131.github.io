@@ -272,9 +272,9 @@
         /* ─── Showcase Slider ─── */
         .showcase-slider {
             position: relative;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-            height: clamp(240px, 30vw, 420px);
+            height: clamp(280px, 34vw, 480px);
         }
         .showcase-slide {
             position: absolute;
@@ -323,6 +323,36 @@
             width: 20px; height: 20px;
             fill: #fff;
             margin-left: 3px;
+        }
+
+        /* Fullscreen button */
+        .slide-fullscreen {
+            position: absolute;
+            bottom: 10px; right: 10px;
+            z-index: 5;
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.3s ease, transform 0.2s ease;
+        }
+        .showcase-slide:hover .slide-fullscreen { opacity: 1; }
+        .slide-fullscreen:hover {
+            background: rgba(255, 23, 68, 0.7);
+            transform: scale(1.12);
+            border-color: rgba(255, 23, 68, 0.5);
+        }
+        .slide-fullscreen svg {
+            width: 16px; height: 16px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         @media (max-width: 768px) {
@@ -645,12 +675,14 @@
                             <div class="slide-play">
                                 <div class="slide-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
                             </div>
+                            <button class="slide-fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
                         </div>
                     </div>
                     <!-- Slide 1: Streamable (main) -->
                     <div class="showcase-slide" data-slide="1" data-type="streamable" data-vid="4uwent">
                         <div class="slide-media">
                             <iframe allow="fullscreen" allowfullscreen src="https://streamable.com/e/4uwent?"></iframe>
+                            <button class="slide-fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
                         </div>
                     </div>
                     <!-- Slide 2: YouTube -->
@@ -660,6 +692,7 @@
                             <div class="slide-play">
                                 <div class="slide-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
                             </div>
+                            <button class="slide-fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
                         </div>
                     </div>
                 </div>
@@ -744,7 +777,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
 
-            // Cancel safety timeout — scripts loaded fine
             if (window.__overlayTimeout) clearTimeout(window.__overlayTimeout);
 
             // ═══════════════════════════════════════════════
@@ -770,7 +802,6 @@
             gsap.ticker.add((time) => lenis.raf(time * 1000));
             gsap.ticker.lagSmoothing(0);
 
-            // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -802,7 +833,6 @@
             gsap.set('.hero p', { opacity: 0, y: 50 });
             gsap.set('.hero-actions .btn', { opacity: 0, y: 40, scale: 0.7 });
 
-            // Scroll-triggered sections
             gsap.set('.feature-card', { opacity: 0, y: 100, rotateX: 25, scale: 0.85 });
             gsap.set('.showcase-slide', { opacity: 0, y: 80 });
             gsap.set('.store-cta', { opacity: 0, x: -150, rotateY: 12 });
@@ -816,7 +846,6 @@
             const hasSeenEntrance = sessionStorage.getItem('ge_entrance_seen');
 
             if (prefersReducedMotion || hasSeenEntrance) {
-                // Skip entrance — immediately show everything
                 clearTimeout(window.__overlayTimeout);
                 gsap.set('.entrance-overlay', { autoAlpha: 0, display: 'none' });
                 gsap.set(['.main-header', '.hero-badge', '.hero h1', '.hero p'],
@@ -826,7 +855,6 @@
                     '.price-card', '.community-cta', '.main-footer'],
                     { clearProps: 'all' });
 
-                // Start badge float immediately
                 gsap.to('.hero-badge', {
                     y: -10,
                     duration: 2.5,
@@ -835,19 +863,16 @@
                     repeat: -1,
                 });
             } else {
-                // First visit this session — play cinematic entrance
                 sessionStorage.setItem('ge_entrance_seen', '1');
 
                 const entrance = gsap.timeline({ delay: 0.2 });
 
                 entrance
-                    // Logo fades in
                     .to('.entrance-logo', {
                         opacity: 1,
                         duration: 0.7,
                         ease: 'power2.out'
                     })
-                    // Scanline sweeps across
                     .to('.entrance-scanline', {
                         opacity: 1,
                         top: '0%',
@@ -859,7 +884,6 @@
                         duration: 0.6,
                         ease: 'power2.inOut',
                     })
-                    // Logo glitch shakes
                     .to('.entrance-logo', {
                         x: () => gsap.utils.random(-12, 12),
                         textShadow: '3px 0 #FF1744, -3px 0 #FF6B6B',
@@ -869,7 +893,6 @@
                         ease: 'steps(1)',
                     }, '-=0.4')
                     .set('.entrance-logo', { textShadow: 'none', x: 0 })
-                    // Logo scales out with blur
                     .to('.entrance-logo', {
                         opacity: 0,
                         scale: 2.5,
@@ -877,20 +900,17 @@
                         duration: 0.5,
                         ease: 'power3.in'
                     }, '+=0.1')
-                    // Overlay splits/slides away
                     .to('.entrance-overlay', {
                         clipPath: 'inset(0 0 100% 0)',
                         duration: 1,
                         ease: 'power4.inOut',
                     })
-                    // Header drops in
                     .to('.main-header', {
                         yPercent: 0,
                         opacity: 1,
                         duration: 0.8,
                         ease: 'power3.out'
                     }, '-=0.5')
-                    // Hero badge bounces in
                     .to('.hero-badge', {
                         opacity: 1,
                         y: 0,
@@ -898,7 +918,6 @@
                         duration: 0.8,
                         ease: 'back.out(1.7)'
                     }, '-=0.4')
-                    // Hero heading sweeps up
                     .to('.hero h1', {
                         opacity: 1,
                         y: 0,
@@ -906,14 +925,12 @@
                         duration: 1.2,
                         ease: 'power4.out'
                     }, '-=0.5')
-                    // Hero paragraph
                     .to('.hero p', {
                         opacity: 1,
                         y: 0,
                         duration: 0.8,
                         ease: 'power3.out'
                     }, '-=0.6')
-                    // Buttons stagger in with bounce
                     .to('.hero-actions .btn', {
                         opacity: 1,
                         y: 0,
@@ -922,7 +939,6 @@
                         duration: 0.7,
                         ease: 'back.out(1.7)'
                     }, '-=0.5')
-                    // Start subtle floating animation on badge
                     .add(() => {
                         gsap.to('.hero-badge', {
                             y: -10,
@@ -959,7 +975,6 @@
                             }
                         });
                     } catch(e) {
-                        // SplitType fallback — fade in normally
                         gsap.set(h2, { opacity: 0, y: 30 });
                         ScrollTrigger.create({
                             trigger: h2, start: 'top 82%', once: true,
@@ -1004,7 +1019,6 @@
                     }
                 });
 
-                // 3D tilt on hover (desktop only)
                 if (!isMobile) {
                     card.addEventListener('mousemove', (e) => {
                         const rect = card.getBoundingClientRect();
@@ -1042,14 +1056,12 @@
             const slides = gsap.utils.toArray('.showcase-slide');
 
             if (sliderEl && slides.length === 3) {
-                // Position configs: left, center, right
                 const posConfigs = [
-                    { left: '0%',  width: '23%', zIndex: 1, opacity: 0.5,  borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
-                    { left: '25%', width: '50%', zIndex: 3, opacity: 1,    borderColor: 'rgba(255,255,255,0.1)',  boxShadow: '0 30px 80px rgba(0,0,0,0.5), 0 0 50px rgba(255,23,68,0.12)' },
-                    { left: '77%', width: '23%', zIndex: 1, opacity: 0.5,  borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
+                    { left: '0%',  width: '21%', zIndex: 1, opacity: 0.5,  borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
+                    { left: '23%', width: '54%', zIndex: 3, opacity: 1,    borderColor: 'rgba(255,255,255,0.1)',  boxShadow: '0 30px 80px rgba(0,0,0,0.5), 0 0 50px rgba(255,23,68,0.12)' },
+                    { left: '79%', width: '21%', zIndex: 1, opacity: 0.5,  borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
                 ];
 
-                // Track which slide index is at which position [leftIdx, centerIdx, rightIdx]
                 let order = [0, 1, 2];
                 let isSliding = false;
 
@@ -1073,14 +1085,12 @@
                             }
                         });
 
-                        // Manage embeds: load YouTube embed when at center, show thumbnail otherwise
                         const type = slide.dataset.type;
                         const vid = slide.dataset.vid;
                         const mediaEl = slide.querySelector('.slide-media');
                         const playOverlay = slide.querySelector('.slide-play');
 
                         if (posIdx === 1 && type === 'youtube' && animate) {
-                            // Moving to center — load YouTube embed
                             setTimeout(() => {
                                 const existingIframe = mediaEl.querySelector('iframe');
                                 if (!existingIframe) {
@@ -1094,7 +1104,6 @@
                                 }
                             }, animate ? 400 : 0);
                         } else if (posIdx !== 1 && type === 'youtube') {
-                            // Moving to side — remove YouTube embed, show thumbnail
                             const existingIframe = mediaEl.querySelector('iframe');
                             if (existingIframe) existingIframe.remove();
                             if (playOverlay) gsap.to(playOverlay, { opacity: 1, duration: 0.3 });
@@ -1102,12 +1111,10 @@
                     });
                 }
 
-                // Initial positions (no animation, handled by scroll reveal)
                 slides.forEach(slide => {
                     gsap.set(slide, { y: '-50%' });
                 });
 
-                // Scroll reveal
                 ScrollTrigger.create({
                     trigger: sliderEl,
                     start: 'top 85%',
@@ -1149,11 +1156,32 @@
 
                 // Click to slide (works on mobile + desktop)
                 slides.forEach(slide => {
-                    slide.addEventListener('click', () => {
+                    slide.addEventListener('click', (e) => {
+                        if (e.target.closest('.slide-fullscreen')) return;
                         const slideIdx = parseInt(slide.dataset.slide);
                         const posIdx = order.indexOf(slideIdx);
                         if (posIdx === 0) rotateLeft();
                         else if (posIdx === 2) rotateRight();
+                    });
+                });
+
+                // Fullscreen button handler
+                document.querySelectorAll('.slide-fullscreen').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const slideMedia = btn.closest('.slide-media');
+                        if (!slideMedia) return;
+
+                        const iframe = slideMedia.querySelector('iframe');
+                        const target = iframe || slideMedia;
+
+                        if (target.requestFullscreen) {
+                            target.requestFullscreen();
+                        } else if (target.webkitRequestFullscreen) {
+                            target.webkitRequestFullscreen();
+                        } else if (target.msRequestFullscreen) {
+                            target.msRequestFullscreen();
+                        }
                     });
                 });
             }

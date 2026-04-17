@@ -332,9 +332,29 @@
             .vouch-stats { gap: 1.5rem; }
             .lightbox-content iframe { width: 95vw; height: 55vw; }
         }
+
+        /* ─── Scroll Progress Bar ─── */
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-red), #FF6B6B, var(--primary-red));
+            background-size: 200% 100%;
+            animation: progress-glow 3s ease infinite;
+            z-index: 10002;
+            box-shadow: 0 0 15px var(--glow-red), 0 0 5px var(--primary-red);
+            pointer-events: none;
+        }
+        @keyframes progress-glow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
     </style>
 </head>
 <body>
+
+    <div class="scroll-progress" id="scrollProgress"></div>
 
     <div class="aurora-background"></div>
     <div class="grid-background"></div>
@@ -689,7 +709,17 @@
             // ─── GSAP Scroll Animations ───
             gsap.registerPlugin(ScrollTrigger);
 
-            // Header slide down
+            gsap.to('.scroll-progress', {
+                width: '100%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.documentElement,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.3,
+                }
+            });
+
             gsap.from('.main-header', {
                 yPercent: -100,
                 opacity: 0,
@@ -698,7 +728,6 @@
                 delay: 0.2,
             });
 
-            // Hero section
             gsap.from('.page-hero h1', {
                 opacity: 0, y: 60, skewY: 2,
                 duration: 1, ease: 'power4.out', delay: 0.4,
@@ -708,7 +737,6 @@
                 duration: 0.8, ease: 'power3.out', delay: 0.6,
             });
 
-            // Stats counter animation
             gsap.from('.vouch-stat', {
                 opacity: 0, y: 50, scale: 0.8,
                 stagger: 0.15,
@@ -717,7 +745,6 @@
                 delay: 0.8,
             });
 
-            // Filter bar
             gsap.from('.filter-bar', {
                 opacity: 0, y: 30,
                 duration: 0.6, ease: 'power3.out',
@@ -728,7 +755,6 @@
                 },
             });
 
-            // Vouch cards — staggered entrance as they scroll into view
             function animateVouchCards() {
                 const cards = gsap.utils.toArray('.vouch-card');
                 cards.forEach((card, i) => {
@@ -748,10 +774,8 @@
                 });
             }
 
-            // Run after initial render
             setTimeout(animateVouchCards, 100);
 
-            // Re-run after filter changes
             const origRender = renderVouches;
             renderVouches = function() {
                 origRender();
@@ -759,7 +783,6 @@
                 setTimeout(animateVouchCards, 50);
             };
 
-            // Footer
             gsap.from('.main-footer', {
                 opacity: 0, y: 40,
                 duration: 0.8, ease: 'power3.out',
