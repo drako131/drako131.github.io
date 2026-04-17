@@ -413,6 +413,9 @@
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
     <script>
         // Clean URL: redirect /index.html to /
         if (window.location.pathname.endsWith('/index.html')) {
@@ -683,16 +686,89 @@
             });
             animateCursor();
 
-            // Scroll animations
-            const scrollObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
+            // ─── GSAP Scroll Animations ───
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Header slide down
+            gsap.from('.main-header', {
+                yPercent: -100,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                delay: 0.2,
+            });
+
+            // Hero section
+            gsap.from('.page-hero h1', {
+                opacity: 0, y: 60, skewY: 2,
+                duration: 1, ease: 'power4.out', delay: 0.4,
+            });
+            gsap.from('.page-hero p', {
+                opacity: 0, y: 40,
+                duration: 0.8, ease: 'power3.out', delay: 0.6,
+            });
+
+            // Stats counter animation
+            gsap.from('.vouch-stat', {
+                opacity: 0, y: 50, scale: 0.8,
+                stagger: 0.15,
+                duration: 0.8,
+                ease: 'back.out(1.5)',
+                delay: 0.8,
+            });
+
+            // Filter bar
+            gsap.from('.filter-bar', {
+                opacity: 0, y: 30,
+                duration: 0.6, ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.filter-bar',
+                    start: 'top 90%',
+                    once: true,
+                },
+            });
+
+            // Vouch cards — staggered entrance as they scroll into view
+            function animateVouchCards() {
+                const cards = gsap.utils.toArray('.vouch-card');
+                cards.forEach((card, i) => {
+                    gsap.fromTo(card,
+                        { opacity: 0, y: 60, scale: 0.92 },
+                        {
+                            opacity: 1, y: 0, scale: 1,
+                            duration: 0.7,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: card,
+                                start: 'top 92%',
+                                once: true,
+                            },
+                        }
+                    );
                 });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
+            }
+
+            // Run after initial render
+            setTimeout(animateVouchCards, 100);
+
+            // Re-run after filter changes
+            const origRender = renderVouches;
+            renderVouches = function() {
+                origRender();
+                ScrollTrigger.refresh();
+                setTimeout(animateVouchCards, 50);
+            };
+
+            // Footer
+            gsap.from('.main-footer', {
+                opacity: 0, y: 40,
+                duration: 0.8, ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.main-footer',
+                    start: 'top 95%',
+                    once: true,
+                },
+            });
         });
     </script>
 </body>

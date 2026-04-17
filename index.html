@@ -272,9 +272,9 @@
         /* ─── Showcase Slider ─── */
         .showcase-slider {
             position: relative;
-            max-width: 1140px;
+            max-width: 1200px;
             margin: 0 auto;
-            height: clamp(200px, 26vw, 360px);
+            height: clamp(240px, 30vw, 420px);
         }
         .showcase-slide {
             position: absolute;
@@ -284,6 +284,7 @@
             background: rgba(10, 10, 15, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.06);
             will-change: transform, left, width;
+            cursor: pointer;
         }
         .showcase-slide .slide-media {
             position: relative;
@@ -812,8 +813,11 @@
             // ═══════════════════════════════════════════════
             //  CINEMATIC ENTRANCE SEQUENCE
             // ═══════════════════════════════════════════════
-            if (prefersReducedMotion) {
-                // Immediately show everything
+            const hasSeenEntrance = sessionStorage.getItem('ge_entrance_seen');
+
+            if (prefersReducedMotion || hasSeenEntrance) {
+                // Skip entrance — immediately show everything
+                clearTimeout(window.__overlayTimeout);
                 gsap.set('.entrance-overlay', { autoAlpha: 0, display: 'none' });
                 gsap.set(['.main-header', '.hero-badge', '.hero h1', '.hero p'],
                     { clearProps: 'all' });
@@ -821,7 +825,19 @@
                 gsap.set(['.feature-card', '.showcase-slide', '.store-cta',
                     '.price-card', '.community-cta', '.main-footer'],
                     { clearProps: 'all' });
+
+                // Start badge float immediately
+                gsap.to('.hero-badge', {
+                    y: -10,
+                    duration: 2.5,
+                    ease: 'sine.inOut',
+                    yoyo: true,
+                    repeat: -1,
+                });
             } else {
+                // First visit this session — play cinematic entrance
+                sessionStorage.setItem('ge_entrance_seen', '1');
+
                 const entrance = gsap.timeline({ delay: 0.2 });
 
                 entrance
@@ -1028,9 +1044,9 @@
             if (sliderEl && slides.length === 3) {
                 // Position configs: left, center, right
                 const posConfigs = [
-                    { left: '0%',  width: '27%', zIndex: 1, opacity: 0.55, borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
-                    { left: '29%', width: '42%', zIndex: 3, opacity: 1,    borderColor: 'rgba(255,255,255,0.1)',  boxShadow: '0 30px 80px rgba(0,0,0,0.5), 0 0 50px rgba(255,23,68,0.12)' },
-                    { left: '73%', width: '27%', zIndex: 1, opacity: 0.55, borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
+                    { left: '0%',  width: '23%', zIndex: 1, opacity: 0.5,  borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
+                    { left: '25%', width: '50%', zIndex: 3, opacity: 1,    borderColor: 'rgba(255,255,255,0.1)',  boxShadow: '0 30px 80px rgba(0,0,0,0.5), 0 0 50px rgba(255,23,68,0.12)' },
+                    { left: '77%', width: '23%', zIndex: 1, opacity: 0.5,  borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
                 ];
 
                 // Track which slide index is at which position [leftIdx, centerIdx, rightIdx]
@@ -1069,7 +1085,7 @@
                                 const existingIframe = mediaEl.querySelector('iframe');
                                 if (!existingIframe) {
                                     const iframe = document.createElement('iframe');
-                                    iframe.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&mute=0&rel=0&modestbranding=1&playsinline=1`;
+                                    iframe.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&mute=0&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1`;
                                     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
                                     iframe.allowFullscreen = true;
                                     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
@@ -1131,19 +1147,7 @@
                     applyPositions(true);
                 }
 
-                // Desktop: hover to slide
-                if (!isMobile) {
-                    slides.forEach(slide => {
-                        slide.addEventListener('mouseenter', () => {
-                            const slideIdx = parseInt(slide.dataset.slide);
-                            const posIdx = order.indexOf(slideIdx);
-                            if (posIdx === 0) rotateLeft();      // hovered left card
-                            else if (posIdx === 2) rotateRight(); // hovered right card
-                        });
-                    });
-                }
-
-                // Click also triggers slide (works on mobile + desktop)
+                // Click to slide (works on mobile + desktop)
                 slides.forEach(slide => {
                     slide.addEventListener('click', () => {
                         const slideIdx = parseInt(slide.dataset.slide);
