@@ -1061,6 +1061,10 @@
                             const fsBtn = mediaEl.querySelector('.slide-fullscreen');
                             if (fsBtn) fsBtn.style.display = '';
                         }
+
+                        mediaEl.querySelectorAll('iframe').forEach(f => {
+                            f.style.pointerEvents = posIdx === 1 ? '' : 'none';
+                        });
                     });
                 }
 
