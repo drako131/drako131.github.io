@@ -512,7 +512,6 @@
 
                     const card = document.createElement('div');
                     card.className = 'vouch-card';
-                    card.style.animationDelay = `${index * 60}ms`;
 
                     let mediaHTML = '';
                     let badgeHTML = '';
@@ -568,6 +567,7 @@
                     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     renderVouches(btn.dataset.filter);
+                    setTimeout(animateVouchCards, 50);
                 });
             });
 
@@ -731,29 +731,19 @@
                 const cards = gsap.utils.toArray('.vouch-card');
                 cards.forEach((card, i) => {
                     gsap.fromTo(card,
-                        { opacity: 0, y: 60, scale: 0.92 },
+                        { opacity: 0 },
                         {
-                            opacity: 1, y: 0, scale: 1,
-                            duration: 0.7,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: card,
-                                start: 'top 92%',
-                                once: true,
-                            },
+                            opacity: 1,
+                            duration: 0.5,
+                            delay: i * 0.03,
+                            ease: 'power2.out',
+                            clearProps: 'all',
                         }
                     );
                 });
             }
 
             setTimeout(animateVouchCards, 100);
-
-            const origRender = renderVouches;
-            renderVouches = function() {
-                origRender();
-                ScrollTrigger.refresh();
-                setTimeout(animateVouchCards, 50);
-            };
 
             gsap.from('.main-footer', {
                 opacity: 0, y: 40,
