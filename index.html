@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    
+    <!-- ═══ Animation Libraries ═══ -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollToPlugin.min.js"></script>
@@ -269,13 +269,79 @@
         .status-indicator .online { color: #00E676; }
         .status-indicator .dot.online { background-color: #00E676; box-shadow: 0 0 8px rgba(0, 230, 118, 0.5); }
 
-        /* ─── Showcase ─── */
-        .video-container {
-            max-width: 900px; margin: 0 auto; border-radius: 16px; overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 50px var(--glow-red-soft);
+        /* ─── Showcase Slider ─── */
+        .showcase-slider {
+            position: relative;
+            max-width: 1140px;
+            margin: 0 auto;
+            height: clamp(200px, 26vw, 360px);
         }
-        .video-container video, .video-container iframe { width: 100%; height: auto; display: block; }
+        .showcase-slide {
+            position: absolute;
+            top: 50%;
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            will-change: transform, left, width;
+        }
+        .showcase-slide .slide-media {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #0a0a0f;
+            overflow: hidden;
+        }
+        .showcase-slide .slide-media iframe,
+        .showcase-slide .slide-media img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border: none;
+            display: block;
+        }
+        .showcase-slide .slide-play {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 2;
+            transition: opacity 0.4s ease;
+        }
+        .showcase-slide .slide-play-btn {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 23, 68, 0.85);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 25px rgba(255, 23, 68, 0.4);
+            transition: transform 0.3s ease;
+        }
+        .showcase-slide:hover .slide-play-btn { transform: scale(1.15); }
+        .showcase-slide .slide-play-btn svg {
+            width: 20px; height: 20px;
+            fill: #fff;
+            margin-left: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .showcase-slider {
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .showcase-slide {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                width: 100% !important;
+                transform: none !important;
+                opacity: 1 !important;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
 
         /* ─── Store CTA ─── */
         .store-cta {
@@ -300,7 +366,7 @@
         .store-cta h2 span { color: var(--primary-red); }
         .store-cta p { color: var(--text-muted); max-width: 550px; margin: 0 auto 2rem auto; font-size: 1.05rem; line-height: 1.7; }
 
-       
+        /* ─── Pricing ─── */
         .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; max-width: 400px; margin: 0 auto; }
         .price-card {
             background: var(--surface-color);
@@ -339,6 +405,7 @@
         }
         .price-card .btn { width: 100%; justify-content: center; padding: 12px 20px; font-size: 0.88rem; }
 
+        /* ─── Community ─── */
         .community-cta {
             text-align: center; padding: 4rem;
             background: var(--surface-color);
@@ -358,7 +425,7 @@
             transform: translateY(-2px);
         }
 
-     
+        /* ─── Footer ─── */
         .main-footer {
             padding: 3rem 0 2rem 0; text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.04); margin-top: 60px;
@@ -369,7 +436,7 @@
         .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
         .footer-links a { color: var(--text-muted); font-size: 0.85rem; }
 
-      
+        /* ─── Scroll Progress Bar ─── */
         .scroll-progress {
             position: fixed;
             top: 0; left: 0;
@@ -387,7 +454,7 @@
             50% { background-position: 100% 50%; }
         }
 
-     
+        /* ─── Entrance Overlay ─── */
         .entrance-overlay {
             position: fixed;
             inset: 0;
@@ -419,11 +486,11 @@
             box-shadow: 0 0 20px var(--glow-red), 0 0 60px var(--glow-red);
         }
 
-  
+        /* ─── SplitType text wrappers ─── */
         .word { display: inline-block !important; will-change: transform, opacity; }
         .char { display: inline-block !important; will-change: transform, opacity; }
 
-     
+        /* ─── Responsive ─── */
         @media (max-width: 900px) {
             .features-grid { grid-template-columns: 1fr 1fr; }
             .pricing-grid { grid-template-columns: 1fr 1fr; }
@@ -451,7 +518,7 @@
 </head>
 <body>
 
-   
+    <!-- ═══ Entrance Overlay ═══ -->
     <div class="entrance-overlay" id="entranceOverlay">
         <div class="entrance-logo">Gaming<span class="accent">Eyes</span></div>
         <div class="entrance-scanline"></div>
@@ -462,14 +529,14 @@
         window.__overlayTimeout = setTimeout(function() {
             var ov = document.getElementById('entranceOverlay');
             if (ov) ov.style.display = 'none';
-            document.querySelectorAll('.animate-on-scroll, .feature-card, .video-container, .store-cta, .price-card, .community-cta, .main-header, .main-footer, .hero-badge, .hero h1, .hero p, .hero-actions .btn').forEach(function(el) {
+            document.querySelectorAll('.animate-on-scroll, .feature-card, .showcase-slide, .store-cta, .price-card, .community-cta, .main-header, .main-footer, .hero-badge, .hero h1, .hero p, .hero-actions .btn').forEach(function(el) {
                 el.style.opacity = '1';
                 el.style.transform = 'none';
             });
         }, 5000);
     </script>
 
-   
+    <!-- ═══ Scroll Progress ═══ -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
     <div class="aurora-background"></div>
@@ -569,9 +636,30 @@
                 <div class="section-header animate-on-scroll">
                     <h2>See It In <span style="color: var(--primary-red)">Action</span></h2>
                 </div>
-                <div class="video-container animate-on-scroll">
-                    <div style="position:relative; width:100%; height:0px; padding-bottom:56.250%">
-                        <iframe allow="fullscreen" allowfullscreen height="100%" src="https://streamable.com/e/4uwent?" width="100%" style="border:none; width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden;"></iframe>
+                <div class="showcase-slider animate-on-scroll" id="showcaseSlider">
+                    <!-- Slide 0: YouTube -->
+                    <div class="showcase-slide" data-slide="0" data-type="youtube" data-vid="Txqt7rMLLjk">
+                        <div class="slide-media">
+                            <img src="https://img.youtube.com/vi/Txqt7rMLLjk/hqdefault.jpg" alt="Gameplay Showcase">
+                            <div class="slide-play">
+                                <div class="slide-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 1: Streamable (main) -->
+                    <div class="showcase-slide" data-slide="1" data-type="streamable" data-vid="4uwent">
+                        <div class="slide-media">
+                            <iframe allow="fullscreen" allowfullscreen src="https://streamable.com/e/4uwent?"></iframe>
+                        </div>
+                    </div>
+                    <!-- Slide 2: YouTube -->
+                    <div class="showcase-slide" data-slide="2" data-type="youtube" data-vid="h_6STFMO2rs">
+                        <div class="slide-media">
+                            <img src="https://img.youtube.com/vi/h_6STFMO2rs/hqdefault.jpg" alt="Ace Gameplay">
+                            <div class="slide-play">
+                                <div class="slide-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -658,13 +746,17 @@
             // Cancel safety timeout — scripts loaded fine
             if (window.__overlayTimeout) clearTimeout(window.__overlayTimeout);
 
-          
+            // ═══════════════════════════════════════════════
+            //  GSAP + PLUGINS
+            // ═══════════════════════════════════════════════
             gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const isMobile = window.innerWidth <= 768;
 
-         
+            // ═══════════════════════════════════════════════
+            //  LENIS SMOOTH SCROLL
+            // ═══════════════════════════════════════════════
             const lenis = new Lenis({
                 duration: 1.2,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -686,7 +778,9 @@
                 });
             });
 
-        
+            // ═══════════════════════════════════════════════
+            //  SCROLL PROGRESS BAR
+            // ═══════════════════════════════════════════════
             gsap.to('.scroll-progress', {
                 width: '100%',
                 ease: 'none',
@@ -698,28 +792,33 @@
                 }
             });
 
+            // ═══════════════════════════════════════════════
+            //  SET INITIAL HIDDEN STATES (overlay covers while these set)
+            // ═══════════════════════════════════════════════
             gsap.set('.main-header', { yPercent: -100, opacity: 0 });
             gsap.set('.hero-badge', { opacity: 0, y: 40, scale: 0.7 });
             gsap.set('.hero h1', { opacity: 0, y: 100, skewY: 3 });
             gsap.set('.hero p', { opacity: 0, y: 50 });
             gsap.set('.hero-actions .btn', { opacity: 0, y: 40, scale: 0.7 });
 
-           
+            // Scroll-triggered sections
             gsap.set('.feature-card', { opacity: 0, y: 100, rotateX: 25, scale: 0.85 });
-            gsap.set('.video-container', { opacity: 0, y: 120, scale: 0.8 });
+            gsap.set('.showcase-slide', { opacity: 0, y: 80 });
             gsap.set('.store-cta', { opacity: 0, x: -150, rotateY: 12 });
             gsap.set('.price-card', { opacity: 0, scale: 0, rotateZ: -15, y: 80 });
             gsap.set('.community-cta', { opacity: 0, x: 150, rotateY: -12 });
             gsap.set('.main-footer', { opacity: 0, y: 40 });
 
-           
+            // ═══════════════════════════════════════════════
+            //  CINEMATIC ENTRANCE SEQUENCE
+            // ═══════════════════════════════════════════════
             if (prefersReducedMotion) {
                 // Immediately show everything
                 gsap.set('.entrance-overlay', { autoAlpha: 0, display: 'none' });
                 gsap.set(['.main-header', '.hero-badge', '.hero h1', '.hero p'],
                     { clearProps: 'all' });
                 gsap.set('.hero-actions .btn', { clearProps: 'all' });
-                gsap.set(['.feature-card', '.video-container', '.store-cta',
+                gsap.set(['.feature-card', '.showcase-slide', '.store-cta',
                     '.price-card', '.community-cta', '.main-footer'],
                     { clearProps: 'all' });
             } else {
@@ -819,6 +918,9 @@
                     });
             }
 
+            // ═══════════════════════════════════════════════
+            //  SECTION HEADER TEXT REVEALS (SplitType)
+            // ═══════════════════════════════════════════════
             if (typeof SplitType !== 'undefined' && !prefersReducedMotion) {
                 document.querySelectorAll('.section-header h2').forEach(h2 => {
                     try {
@@ -863,7 +965,9 @@
                 });
             }
 
-           
+            // ═══════════════════════════════════════════════
+            //  FEATURE CARDS — 3D Entrance + Tilt Hover
+            // ═══════════════════════════════════════════════
             const featureCards = gsap.utils.toArray('.feature-card');
 
             featureCards.forEach((card, i) => {
@@ -915,23 +1019,144 @@
                 }
             });
 
-           
-            ScrollTrigger.create({
-                trigger: '.video-container',
-                start: 'top 85%',
-                once: true,
-                onEnter: () => {
-                    gsap.to('.video-container', {
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                        duration: 1.4,
-                        ease: 'power3.out',
+            // ═══════════════════════════════════════════════
+            //  SHOWCASE SLIDER — Netflix 3-Card Carousel
+            // ═══════════════════════════════════════════════
+            const sliderEl = document.getElementById('showcaseSlider');
+            const slides = gsap.utils.toArray('.showcase-slide');
+
+            if (sliderEl && slides.length === 3) {
+                // Position configs: left, center, right
+                const posConfigs = [
+                    { left: '0%',  width: '27%', zIndex: 1, opacity: 0.55, borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
+                    { left: '29%', width: '42%', zIndex: 3, opacity: 1,    borderColor: 'rgba(255,255,255,0.1)',  boxShadow: '0 30px 80px rgba(0,0,0,0.5), 0 0 50px rgba(255,23,68,0.12)' },
+                    { left: '73%', width: '27%', zIndex: 1, opacity: 0.55, borderColor: 'rgba(255,255,255,0.04)', boxShadow: 'none' },
+                ];
+
+                // Track which slide index is at which position [leftIdx, centerIdx, rightIdx]
+                let order = [0, 1, 2];
+                let isSliding = false;
+
+                function applyPositions(animate) {
+                    const dur = animate ? 0.7 : 0;
+                    order.forEach((slideIdx, posIdx) => {
+                        const slide = slides[slideIdx];
+                        const cfg = posConfigs[posIdx];
+                        gsap.to(slide, {
+                            left: cfg.left,
+                            width: cfg.width,
+                            zIndex: cfg.zIndex,
+                            opacity: cfg.opacity,
+                            y: '-50%',
+                            borderColor: cfg.borderColor,
+                            boxShadow: cfg.boxShadow,
+                            duration: dur,
+                            ease: 'power3.inOut',
+                            onComplete: () => {
+                                if (posIdx === 1) isSliding = false;
+                            }
+                        });
+
+                        // Manage embeds: load YouTube embed when at center, show thumbnail otherwise
+                        const type = slide.dataset.type;
+                        const vid = slide.dataset.vid;
+                        const mediaEl = slide.querySelector('.slide-media');
+                        const playOverlay = slide.querySelector('.slide-play');
+
+                        if (posIdx === 1 && type === 'youtube' && animate) {
+                            // Moving to center — load YouTube embed
+                            setTimeout(() => {
+                                const existingIframe = mediaEl.querySelector('iframe');
+                                if (!existingIframe) {
+                                    const iframe = document.createElement('iframe');
+                                    iframe.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&mute=0&rel=0&modestbranding=1&playsinline=1`;
+                                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                                    iframe.allowFullscreen = true;
+                                    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+                                    mediaEl.appendChild(iframe);
+                                    if (playOverlay) gsap.to(playOverlay, { opacity: 0, duration: 0.3 });
+                                }
+                            }, animate ? 400 : 0);
+                        } else if (posIdx !== 1 && type === 'youtube') {
+                            // Moving to side — remove YouTube embed, show thumbnail
+                            const existingIframe = mediaEl.querySelector('iframe');
+                            if (existingIframe) existingIframe.remove();
+                            if (playOverlay) gsap.to(playOverlay, { opacity: 1, duration: 0.3 });
+                        }
                     });
                 }
-            });
 
-          
+                // Initial positions (no animation, handled by scroll reveal)
+                slides.forEach(slide => {
+                    gsap.set(slide, { y: '-50%' });
+                });
+
+                // Scroll reveal
+                ScrollTrigger.create({
+                    trigger: sliderEl,
+                    start: 'top 85%',
+                    once: true,
+                    onEnter: () => {
+                        slides.forEach((slide, i) => {
+                            const cfg = posConfigs[i];
+                            gsap.to(slide, {
+                                opacity: cfg.opacity,
+                                y: '-50%',
+                                left: cfg.left,
+                                width: cfg.width,
+                                zIndex: cfg.zIndex,
+                                borderColor: cfg.borderColor,
+                                boxShadow: cfg.boxShadow,
+                                duration: 1.2,
+                                delay: i === 1 ? 0 : 0.3,
+                                ease: 'power3.out',
+                            });
+                        });
+                    }
+                });
+
+                function rotateLeft() {
+                    if (isSliding) return;
+                    isSliding = true;
+                    // left→center, center→right, right→left
+                    order = [order[2], order[0], order[1]];
+                    applyPositions(true);
+                }
+
+                function rotateRight() {
+                    if (isSliding) return;
+                    isSliding = true;
+                    // right→center, center→left, left→right
+                    order = [order[1], order[2], order[0]];
+                    applyPositions(true);
+                }
+
+                // Desktop: hover to slide
+                if (!isMobile) {
+                    slides.forEach(slide => {
+                        slide.addEventListener('mouseenter', () => {
+                            const slideIdx = parseInt(slide.dataset.slide);
+                            const posIdx = order.indexOf(slideIdx);
+                            if (posIdx === 0) rotateLeft();      // hovered left card
+                            else if (posIdx === 2) rotateRight(); // hovered right card
+                        });
+                    });
+                }
+
+                // Click also triggers slide (works on mobile + desktop)
+                slides.forEach(slide => {
+                    slide.addEventListener('click', () => {
+                        const slideIdx = parseInt(slide.dataset.slide);
+                        const posIdx = order.indexOf(slideIdx);
+                        if (posIdx === 0) rotateLeft();
+                        else if (posIdx === 2) rotateRight();
+                    });
+                });
+            }
+
+            // ═══════════════════════════════════════════════
+            //  STORE CTA — Slide In From Left
+            // ═══════════════════════════════════════════════
             ScrollTrigger.create({
                 trigger: '.store-cta',
                 start: 'top 82%',
@@ -947,7 +1172,9 @@
                 }
             });
 
-        
+            // ═══════════════════════════════════════════════
+            //  PRICE CARD — Dramatic Bounce In
+            // ═══════════════════════════════════════════════
             ScrollTrigger.create({
                 trigger: '.price-card',
                 start: 'top 85%',
@@ -964,7 +1191,9 @@
                 }
             });
 
-          
+            // ═══════════════════════════════════════════════
+            //  COMMUNITY CTA — Slide In From Right
+            // ═══════════════════════════════════════════════
             ScrollTrigger.create({
                 trigger: '.community-cta',
                 start: 'top 82%',
@@ -980,7 +1209,9 @@
                 }
             });
 
-         
+            // ═══════════════════════════════════════════════
+            //  FOOTER
+            // ═══════════════════════════════════════════════
             ScrollTrigger.create({
                 trigger: '.main-footer',
                 start: 'top 92%',
@@ -995,7 +1226,9 @@
                 }
             });
 
-          
+            // ═══════════════════════════════════════════════
+            //  HERO PARALLAX — Fades Out On Scroll
+            // ═══════════════════════════════════════════════
             if (!prefersReducedMotion) {
                 gsap.to('.hero-content', {
                     y: -200,
@@ -1011,7 +1244,9 @@
                 });
             }
 
-         
+            // ═══════════════════════════════════════════════
+            //  BACKGROUND PARALLAX LAYERS
+            // ═══════════════════════════════════════════════
             if (!prefersReducedMotion) {
                 gsap.to('.aurora-background', {
                     yPercent: -25,
@@ -1065,7 +1300,9 @@
                 });
             }
 
-         
+            // ═══════════════════════════════════════════════
+            //  CANVAS BACKGROUND — Particles + Rain + Cursor
+            // ═══════════════════════════════════════════════
             const bgCanvas = document.getElementById('background-canvas');
             const bgCtx = bgCanvas.getContext('2d');
             const cursorCanvas = document.getElementById('cursor-canvas');
@@ -1206,7 +1443,9 @@
             initBackground();
             masterAnimate();
 
-          
+            // ═══════════════════════════════════════════════
+            //  AUDIO TOGGLE
+            // ═══════════════════════════════════════════════
             const audioToggle = document.getElementById('audioToggle');
             const bgMusic = document.getElementById('bgMusic');
             const playIcon = document.getElementById('playIcon');
