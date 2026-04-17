@@ -40,7 +40,6 @@
         }
         a, button, .btn, .tab-btn { cursor: none; }
 
-        /* ─── Backgrounds ─── */
         .aurora-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -4; overflow: hidden;
@@ -85,13 +84,11 @@
             z-index: 30000; pointer-events: none;
         }
 
-        /* ─── Layout ─── */
         .container { width: 90%; max-width: 1140px; margin: 0 auto; position: relative; z-index: 2; }
         .section { padding: 80px 0; }
-        .animate-on-scroll { opacity: 0; transform: translateY(25px); transition: opacity 0.6s ease, transform 0.6s ease; }
-        .animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+        .animate-on-scroll { will-change: transform, opacity; }
 
-        /* ─── Buttons ─── */
+
         .btn {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 13px 32px; border-radius: 10px; font-weight: 700;
@@ -110,7 +107,6 @@
             box-shadow: 0 8px 35px rgba(255, 23, 68, 0.4), inset 0 1px 0 rgba(255,255,255,0.15);
         }
 
-        /* ─── Header ─── */
         .main-header {
             padding: 18px 0; position: sticky; top: 0; width: 100%; z-index: 1001;
             background: rgba(5, 5, 7, 0.6);
@@ -148,7 +144,6 @@
         .main-nav a.active { color: var(--primary-red); }
         .main-nav .btn-primary { margin-left: 0.75rem; padding: 10px 22px; font-size: 0.85rem; }
 
-        /* ─── Page Hero ─── */
         .page-hero {
             text-align: center; padding: 120px 0 40px 0;
         }
@@ -184,7 +179,6 @@
         }
         .vouch-stat .label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
 
-        /* ─── Filter Tabs ─── */
         .filter-bar {
             display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 3rem;
             flex-wrap: wrap;
@@ -208,7 +202,6 @@
             box-shadow: 0 0 20px var(--glow-red-soft);
         }
 
-        /* ─── Vouches Grid ─── */
         .vouches-grid {
             column-count: 3;
             column-gap: 1.25rem;
@@ -280,7 +273,6 @@
         }
         .vouch-source svg { width: 14px; height: 14px; }
 
-        /* ─── Lightbox ─── */
         .lightbox {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             z-index: 20000; display: none; align-items: center; justify-content: center;
@@ -307,7 +299,6 @@
         .lightbox-close:hover { background: rgba(255, 23, 68, 0.15); border-color: rgba(255, 23, 68, 0.3); }
         .lightbox-close svg { width: 18px; height: 18px; stroke: white; stroke-width: 2; fill: none; }
 
-        /* ─── Footer ─── */
         .main-footer {
             padding: 3rem 0 2rem 0; text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.04); margin-top: 60px;
@@ -318,7 +309,6 @@
         .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
         .footer-links a { color: var(--text-muted); font-size: 0.85rem; }
 
-        /* ─── Responsive ─── */
         @media (max-width: 900px) {
             .vouches-grid { column-count: 2; }
         }
@@ -333,7 +323,6 @@
             .lightbox-content iframe { width: 95vw; height: 55vw; }
         }
 
-        /* ─── Scroll Progress Bar ─── */
         .scroll-progress {
             position: fixed;
             top: 0; left: 0;
@@ -381,7 +370,6 @@
 
     <main>
         <div class="container">
-            <!-- PAGE HERO -->
             <section class="page-hero animate-on-scroll">
                 <h1>Real <span class="gradient-text">Vouches</span></h1>
                 <p>Don't just take our word for it. See what our users are saying — real proof from real players.</p>
@@ -401,19 +389,16 @@
                 </div>
             </section>
 
-            <!-- FILTER TABS -->
             <div class="filter-bar animate-on-scroll">
                 <button class="tab-btn active" data-filter="all">All</button>
                 <button class="tab-btn" data-filter="image">Images</button>
                 <button class="tab-btn" data-filter="video">Videos</button>
             </div>
 
-            <!-- VOUCHES GRID -->
             <div class="vouches-grid" id="vouchesGrid"></div>
         </div>
     </main>
 
-    <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox">
         <button class="lightbox-close" id="lightboxClose">
             <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -437,13 +422,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
     <script>
-        // Clean URL: redirect /index.html to /
         if (window.location.pathname.endsWith('/index.html')) {
             window.location.replace(window.location.pathname.replace('/index.html', '/') + window.location.hash);
         }
 
         const VOUCHES = [
-            // ── YouTube videos ──
                { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "xX0FHQZUcOg", source: "YouTube" },
                { type: "youtube", title: "Ace Easy", description: "Unmatched performance", src: "h_6STFMO2rs", source: "YouTube" },
                { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "d5j-fjiRFsc", source: "YouTube" },
@@ -461,7 +444,6 @@
             { type: "youtube", title: "Community Vouch", description: "Highly recommended", src: "ULgOASfnVyU", source: "YouTube" },
             { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "djHz3OYvXJ4", source: "YouTube" },
 
-            // ── Images ──
             { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/0017.webp", source: "Discord" },
             { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/616528751_910075708345432_8567055646851269476_n.webp", source: "Discord" },
             { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/A0881FC7-1437-4B21-85DA-52E0991DDCC8.webp", source: "Discord" },
@@ -518,10 +500,8 @@
             const lightboxClose = document.getElementById('lightboxClose');
             const vouchCount = document.getElementById('vouchCount');
 
-            // Update count
             vouchCount.textContent = VOUCHES.length;
 
-            // Render vouches
             function renderVouches(filter = 'all') {
                 grid.innerHTML = '';
                 const filterType = filter === 'video' ? ['streamable', 'youtube'] : 
@@ -556,7 +536,6 @@
                         sourceIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z"/></svg>`;
                     } else if (vouch.type === 'youtube') {
                         badgeHTML = '<span class="vouch-badge youtube-badge">YouTube</span>';
-                        // FIX 3: Use mqdefault instead of hqdefault to avoid black placeholder thumbnails
                         const thumb = vouch.thumbnail || `https://img.youtube.com/vi/${vouch.src}/mqdefault.jpg`;
                         mediaHTML = `
                             <div class="vouch-media" data-lightbox="youtube" data-src="${vouch.src}">
@@ -584,7 +563,6 @@
                 });
             }
 
-            // Filter tabs
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -593,7 +571,6 @@
                 });
             });
 
-            // Lightbox
             grid.addEventListener('click', (e) => {
                 const media = e.target.closest('.vouch-media');
                 if (!media) return;
@@ -607,8 +584,6 @@
                 } else if (type === 'streamable') {
                     lightboxContent.innerHTML = `<iframe src="https://streamable.com/e/${src}?autoplay=1" allowfullscreen></iframe>`;
                 } else if (type === 'youtube') {
-                    // FIX 1: Added mute=0 so autoplay is allowed by browser policy
-                    // FIX 2: Added rel=0 to suppress unrelated video suggestions, origin for security
                     lightboxContent.innerHTML = `
                         <iframe src="https://www.youtube.com/embed/${src}?autoplay=1&mute=0&rel=0&origin=${encodeURIComponent(window.location.origin)}" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -630,10 +605,8 @@
             lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
-            // Initial render
             renderVouches();
 
-            // ─── Cursor Effect ───
             const cursorCanvas = document.getElementById('cursor-canvas');
             const cursorCtx = cursorCanvas.getContext('2d');
             let mouseX = -200, mouseY = -200;
@@ -706,7 +679,6 @@
             });
             animateCursor();
 
-            // ─── GSAP Scroll Animations ───
             gsap.registerPlugin(ScrollTrigger);
 
             gsap.to('.scroll-progress', {

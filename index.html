@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- ═══ Animation Libraries ═══ -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollToPlugin.min.js"></script>
@@ -48,11 +47,9 @@
         }
         a, button, .btn, .tab-btn { cursor: none; }
 
-        /* ─── Lenis ─── */
         html.lenis, html.lenis body { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
-        /* ─── Backgrounds ─── */
         .aurora-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -4; overflow: hidden;
@@ -101,7 +98,6 @@
             z-index: 30000; pointer-events: none;
         }
 
-        /* ─── Audio Button ─── */
         .audio-control {
             position: fixed; bottom: 30px; right: 30px; z-index: 10001;
             background: rgba(255, 23, 68, 0.08); border: 1px solid rgba(255, 23, 68, 0.3);
@@ -117,9 +113,7 @@
         }
         .audio-control svg { width: 20px; height: 20px; fill: var(--primary-red); }
 
-        /* ─── Layout ─── */
         .container { width: 90%; max-width: 1140px; margin: 0 auto; position: relative; z-index: 2; }
-        /* GSAP handles all scroll animations */
         .animate-on-scroll { will-change: transform, opacity; }
         .section { padding: 100px 0; }
         .section-header { text-align: center; margin-bottom: 4rem; }
@@ -129,7 +123,6 @@
         }
         .section-header p { color: var(--text-muted); margin-top: 0.75rem; font-size: 1.05rem; }
 
-        /* ─── Buttons ─── */
         .btn {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 13px 32px; border-radius: 10px; font-weight: 700;
@@ -159,7 +152,6 @@
             transform: translateY(-2px);
         }
 
-        /* ─── Header ─── */
         .main-header {
             padding: 18px 0; position: sticky; top: 0; width: 100%; z-index: 1001;
             background: rgba(5, 5, 7, 0.6);
@@ -196,7 +188,6 @@
         .main-nav a:hover { color: var(--text-color); }
         .main-nav .btn-primary { margin-left: 0.75rem; padding: 10px 22px; font-size: 0.85rem; }
 
-        /* ─── Hero ─── */
         .hero { min-height: 85vh; display: flex; align-items: center; text-align: center; position: relative; }
         .hero-content { max-width: 800px; margin: 0 auto; }
         .hero-badge {
@@ -232,7 +223,6 @@
         }
         .hero-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 
-        /* ─── Features ─── */
         .features-grid {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
             perspective: 1200px;
@@ -269,7 +259,6 @@
         .status-indicator .online { color: #00E676; }
         .status-indicator .dot.online { background-color: #00E676; box-shadow: 0 0 8px rgba(0, 230, 118, 0.5); }
 
-        /* ─── Showcase Slider ─── */
         .showcase-slider {
             position: relative;
             max-width: 1300px;
@@ -325,7 +314,6 @@
             margin-left: 3px;
         }
 
-        /* Fullscreen button */
         .slide-fullscreen {
             position: absolute;
             bottom: 10px; right: 10px;
@@ -374,7 +362,6 @@
             }
         }
 
-        /* ─── Store CTA ─── */
         .store-cta {
             text-align: center; padding: 4rem; position: relative; overflow: hidden;
             background: linear-gradient(135deg, rgba(255, 23, 68, 0.04) 0%, rgba(255, 23, 68, 0.01) 100%);
@@ -397,7 +384,6 @@
         .store-cta h2 span { color: var(--primary-red); }
         .store-cta p { color: var(--text-muted); max-width: 550px; margin: 0 auto 2rem auto; font-size: 1.05rem; line-height: 1.7; }
 
-        /* ─── Pricing ─── */
         .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; max-width: 400px; margin: 0 auto; }
         .price-card {
             background: var(--surface-color);
@@ -436,7 +422,6 @@
         }
         .price-card .btn { width: 100%; justify-content: center; padding: 12px 20px; font-size: 0.88rem; }
 
-        /* ─── Community ─── */
         .community-cta {
             text-align: center; padding: 4rem;
             background: var(--surface-color);
@@ -456,7 +441,6 @@
             transform: translateY(-2px);
         }
 
-        /* ─── Footer ─── */
         .main-footer {
             padding: 3rem 0 2rem 0; text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.04); margin-top: 60px;
@@ -467,7 +451,6 @@
         .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
         .footer-links a { color: var(--text-muted); font-size: 0.85rem; }
 
-        /* ─── Scroll Progress Bar ─── */
         .scroll-progress {
             position: fixed;
             top: 0; left: 0;
@@ -485,7 +468,6 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* ─── Entrance Overlay ─── */
         .entrance-overlay {
             position: fixed;
             inset: 0;
@@ -517,11 +499,9 @@
             box-shadow: 0 0 20px var(--glow-red), 0 0 60px var(--glow-red);
         }
 
-        /* ─── SplitType text wrappers ─── */
         .word { display: inline-block !important; will-change: transform, opacity; }
         .char { display: inline-block !important; will-change: transform, opacity; }
 
-        /* ─── Responsive ─── */
         @media (max-width: 900px) {
             .features-grid { grid-template-columns: 1fr 1fr; }
             .pricing-grid { grid-template-columns: 1fr 1fr; }
@@ -540,7 +520,6 @@
             .hero-actions { flex-direction: column; align-items: center; }
         }
 
-        /* ─── Reduced motion ─── */
         @media (prefers-reduced-motion: reduce) {
             .entrance-overlay { display: none !important; }
             .scroll-progress { display: none !important; }
@@ -549,13 +528,11 @@
 </head>
 <body>
 
-    <!-- ═══ Entrance Overlay ═══ -->
     <div class="entrance-overlay" id="entranceOverlay">
         <div class="entrance-logo">Gaming<span class="accent">Eyes</span></div>
         <div class="entrance-scanline"></div>
     </div>
 
-    <!-- Safety: remove overlay if scripts fail to load -->
     <script>
         window.__overlayTimeout = setTimeout(function() {
             var ov = document.getElementById('entranceOverlay');
@@ -567,7 +544,6 @@
         }, 5000);
     </script>
 
-    <!-- ═══ Scroll Progress ═══ -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
     <div class="aurora-background"></div>
@@ -609,7 +585,6 @@
 
     <main>
         <div class="container">
-            <!-- HERO -->
             <section class="hero section">
                 <div class="hero-content animate-on-scroll">
                     <div class="hero-badge"><span class="dot"></span> Premium Gaming Tools</div>
@@ -627,7 +602,6 @@
                 </div>
             </section>
 
-            <!-- FEATURES -->
             <section id="features" class="section">
                 <div class="section-header animate-on-scroll">
                     <h2>Why Choose <span style="color: var(--primary-red)">GamingEyes</span>?</h2>
@@ -662,13 +636,11 @@
                 </div>
             </section>
 
-            <!-- SHOWCASE -->
             <section id="showcase" class="section">
                 <div class="section-header animate-on-scroll">
                     <h2>See It In <span style="color: var(--primary-red)">Action</span></h2>
                 </div>
                 <div class="showcase-slider animate-on-scroll" id="showcaseSlider">
-                    <!-- Slide 0: YouTube -->
                     <div class="showcase-slide" data-slide="0" data-type="youtube" data-vid="Txqt7rMLLjk">
                         <div class="slide-media">
                             <img src="https://img.youtube.com/vi/Txqt7rMLLjk/hqdefault.jpg" alt="Gameplay Showcase">
@@ -678,14 +650,12 @@
                             <button class="slide-fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
                         </div>
                     </div>
-                    <!-- Slide 1: Streamable (main) -->
                     <div class="showcase-slide" data-slide="1" data-type="streamable" data-vid="4uwent">
                         <div class="slide-media">
                             <iframe allow="fullscreen" allowfullscreen src="https://streamable.com/e/4uwent?"></iframe>
                             <button class="slide-fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
                         </div>
                     </div>
-                    <!-- Slide 2: YouTube -->
                     <div class="showcase-slide" data-slide="2" data-type="youtube" data-vid="h_6STFMO2rs">
                         <div class="slide-media">
                             <img src="https://img.youtube.com/vi/h_6STFMO2rs/hqdefault.jpg" alt="Ace Gameplay">
@@ -698,7 +668,6 @@
                 </div>
             </section>
 
-            <!-- STORE -->
             <section id="store" class="section">
                 <div class="store-cta animate-on-scroll">
                     <h2>Visit Our <span>Official Store</span></h2>
@@ -710,7 +679,6 @@
                 </div>
             </section>
 
-            <!-- PRICING -->
             <section id="pricing" class="section">
                 <div class="section-header animate-on-scroll">
                     <h2>Premium Access Plans</h2>
@@ -743,7 +711,6 @@
                 </div>
             </section>
 
-            <!-- COMMUNITY -->
             <section class="section">
                 <div class="community-cta animate-on-scroll">
                     <h2>Join the <span style="color: var(--primary-red)">Community</span></h2>
@@ -770,7 +737,6 @@
     </footer>
 
     <script>
-        // Clean URL: redirect /index.html to / (only on web servers, not file://)
         if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('/index.html')) {
             window.location.replace(window.location.pathname.replace('/index.html', '/') + window.location.hash);
         }
@@ -779,17 +745,11 @@
 
             if (window.__overlayTimeout) clearTimeout(window.__overlayTimeout);
 
-            // ═══════════════════════════════════════════════
-            //  GSAP + PLUGINS
-            // ═══════════════════════════════════════════════
             gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const isMobile = window.innerWidth <= 768;
 
-            // ═══════════════════════════════════════════════
-            //  LENIS SMOOTH SCROLL
-            // ═══════════════════════════════════════════════
             const lenis = new Lenis({
                 duration: 1.2,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -810,9 +770,6 @@
                 });
             });
 
-            // ═══════════════════════════════════════════════
-            //  SCROLL PROGRESS BAR
-            // ═══════════════════════════════════════════════
             gsap.to('.scroll-progress', {
                 width: '100%',
                 ease: 'none',
@@ -824,9 +781,6 @@
                 }
             });
 
-            // ═══════════════════════════════════════════════
-            //  SET INITIAL HIDDEN STATES (overlay covers while these set)
-            // ═══════════════════════════════════════════════
             gsap.set('.main-header', { yPercent: -100, opacity: 0 });
             gsap.set('.hero-badge', { opacity: 0, y: 40, scale: 0.7 });
             gsap.set('.hero h1', { opacity: 0, y: 100, skewY: 3 });
@@ -840,9 +794,6 @@
             gsap.set('.community-cta', { opacity: 0, x: 150, rotateY: -12 });
             gsap.set('.main-footer', { opacity: 0, y: 40 });
 
-            // ═══════════════════════════════════════════════
-            //  CINEMATIC ENTRANCE SEQUENCE
-            // ═══════════════════════════════════════════════
             const hasSeenEntrance = sessionStorage.getItem('ge_entrance_seen');
 
             if (prefersReducedMotion || hasSeenEntrance) {
@@ -950,9 +901,6 @@
                     });
             }
 
-            // ═══════════════════════════════════════════════
-            //  SECTION HEADER TEXT REVEALS (SplitType)
-            // ═══════════════════════════════════════════════
             if (typeof SplitType !== 'undefined' && !prefersReducedMotion) {
                 document.querySelectorAll('.section-header h2').forEach(h2 => {
                     try {
@@ -996,9 +944,6 @@
                 });
             }
 
-            // ═══════════════════════════════════════════════
-            //  FEATURE CARDS — 3D Entrance + Tilt Hover
-            // ═══════════════════════════════════════════════
             const featureCards = gsap.utils.toArray('.feature-card');
 
             featureCards.forEach((card, i) => {
@@ -1049,9 +994,6 @@
                 }
             });
 
-            // ═══════════════════════════════════════════════
-            //  SHOWCASE SLIDER — Netflix 3-Card Carousel
-            // ═══════════════════════════════════════════════
             const sliderEl = document.getElementById('showcaseSlider');
             const slides = gsap.utils.toArray('.showcase-slide');
 
@@ -1141,7 +1083,6 @@
                 function rotateLeft() {
                     if (isSliding) return;
                     isSliding = true;
-                    // left→center, center→right, right→left
                     order = [order[2], order[0], order[1]];
                     applyPositions(true);
                 }
@@ -1149,12 +1090,10 @@
                 function rotateRight() {
                     if (isSliding) return;
                     isSliding = true;
-                    // right→center, center→left, left→right
                     order = [order[1], order[2], order[0]];
                     applyPositions(true);
                 }
 
-                // Click to slide (works on mobile + desktop)
                 slides.forEach(slide => {
                     slide.addEventListener('click', (e) => {
                         if (e.target.closest('.slide-fullscreen')) return;
@@ -1165,10 +1104,15 @@
                     });
                 });
 
-                // Fullscreen button handler
                 document.querySelectorAll('.slide-fullscreen').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.stopPropagation();
+
+                        if (document.fullscreenElement || document.webkitFullscreenElement) {
+                            (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+                            return;
+                        }
+
                         const slideMedia = btn.closest('.slide-media');
                         if (!slideMedia) return;
 
@@ -1179,16 +1123,11 @@
                             target.requestFullscreen();
                         } else if (target.webkitRequestFullscreen) {
                             target.webkitRequestFullscreen();
-                        } else if (target.msRequestFullscreen) {
-                            target.msRequestFullscreen();
                         }
                     });
                 });
             }
 
-            // ═══════════════════════════════════════════════
-            //  STORE CTA — Slide In From Left
-            // ═══════════════════════════════════════════════
             ScrollTrigger.create({
                 trigger: '.store-cta',
                 start: 'top 82%',
@@ -1204,9 +1143,6 @@
                 }
             });
 
-            // ═══════════════════════════════════════════════
-            //  PRICE CARD — Dramatic Bounce In
-            // ═══════════════════════════════════════════════
             ScrollTrigger.create({
                 trigger: '.price-card',
                 start: 'top 85%',
@@ -1223,9 +1159,6 @@
                 }
             });
 
-            // ═══════════════════════════════════════════════
-            //  COMMUNITY CTA — Slide In From Right
-            // ═══════════════════════════════════════════════
             ScrollTrigger.create({
                 trigger: '.community-cta',
                 start: 'top 82%',
@@ -1241,9 +1174,6 @@
                 }
             });
 
-            // ═══════════════════════════════════════════════
-            //  FOOTER
-            // ═══════════════════════════════════════════════
             ScrollTrigger.create({
                 trigger: '.main-footer',
                 start: 'top 92%',
@@ -1258,9 +1188,6 @@
                 }
             });
 
-            // ═══════════════════════════════════════════════
-            //  HERO PARALLAX — Fades Out On Scroll
-            // ═══════════════════════════════════════════════
             if (!prefersReducedMotion) {
                 gsap.to('.hero-content', {
                     y: -200,
@@ -1276,9 +1203,6 @@
                 });
             }
 
-            // ═══════════════════════════════════════════════
-            //  BACKGROUND PARALLAX LAYERS
-            // ═══════════════════════════════════════════════
             if (!prefersReducedMotion) {
                 gsap.to('.aurora-background', {
                     yPercent: -25,
@@ -1303,9 +1227,6 @@
                 });
             }
 
-            // ═══════════════════════════════════════════════
-            //  MAGNETIC BUTTONS (Desktop Only)
-            // ═══════════════════════════════════════════════
             if (!isMobile) {
                 document.querySelectorAll('.btn').forEach(btn => {
                     btn.addEventListener('mousemove', (e) => {
@@ -1332,9 +1253,6 @@
                 });
             }
 
-            // ═══════════════════════════════════════════════
-            //  CANVAS BACKGROUND — Particles + Rain + Cursor
-            // ═══════════════════════════════════════════════
             const bgCanvas = document.getElementById('background-canvas');
             const bgCtx = bgCanvas.getContext('2d');
             const cursorCanvas = document.getElementById('cursor-canvas');
@@ -1425,7 +1343,6 @@
             function animateCursor() {
                 cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
 
-                // Cursor glow
                 let gradient = cursorCtx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 200);
                 gradient.addColorStop(0, 'rgba(255, 23, 68, 0.12)');
                 gradient.addColorStop(1, 'rgba(255, 23, 68, 0)');
@@ -1434,7 +1351,6 @@
                 cursorCtx.arc(mouseX, mouseY, 200, 0, Math.PI * 2);
                 cursorCtx.fill();
 
-                // Crosshair cursor
                 cursorCtx.strokeStyle = 'rgba(255, 23, 68, 0.8)';
                 cursorCtx.lineWidth = 1.5;
                 const s = 10;
@@ -1445,7 +1361,6 @@
                 cursorCtx.moveTo(mouseX, mouseY + 4); cursorCtx.lineTo(mouseX, mouseY + s);
                 cursorCtx.stroke();
 
-                // Center dot
                 cursorCtx.fillStyle = 'rgba(255, 23, 68, 1)';
                 cursorCtx.beginPath();
                 cursorCtx.arc(mouseX, mouseY, 2, 0, Math.PI * 2);
@@ -1475,9 +1390,6 @@
             initBackground();
             masterAnimate();
 
-            // ═══════════════════════════════════════════════
-            //  AUDIO TOGGLE
-            // ═══════════════════════════════════════════════
             const audioToggle = document.getElementById('audioToggle');
             const bgMusic = document.getElementById('bgMusic');
             const playIcon = document.getElementById('playIcon');
