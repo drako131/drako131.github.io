@@ -1062,27 +1062,31 @@
                             }
                             const fsBtn = mediaEl.querySelector('.slide-fullscreen');
                             if (fsBtn) fsBtn.style.display = '';
-                            // Resume music when video is removed
-                            resumeMusicAfterVideo();
                         }
 
-                        // Handle Streamable: pause when not in center, play when in center
+                        // Handle Streamable: fully remove iframe when leaving center, recreate when entering
                         if (type === 'streamable') {
-                            const stIframe = mediaEl.querySelector('iframe');
-                            if (stIframe) {
-                                if (posIdx === 1) {
-                                    // Restore src with autoplay when in focus
-                                    const wantedSrc = `https://streamable.com/e/${vid}?autoplay=1`;
-                                    if (!stIframe.src.includes('autoplay=1')) {
-                                        stIframe.src = wantedSrc;
-                                    }
-                                } else {
-                                    // Stop playback: reload without autoplay
-                                    const pausedSrc = `https://streamable.com/e/${vid}?autoplay=0`;
-                                    if (!stIframe.src.includes('autoplay=0')) {
-                                        stIframe.src = pausedSrc;
-                                    }
-                                }
+                            if (posIdx === 1 && animate) {
+                                // Entering center: create iframe with autoplay
+                                pauseMusicForVideo();
+                                const existingSt = mediaEl.querySelector('iframe');
+                                if (existingSt) existingSt.remove();
+                                const stFrame = document.createElement('iframe');
+                                stFrame.src = `https://streamable.com/e/${vid}?autoplay=1`;
+                                stFrame.allow = 'fullscreen; autoplay';
+                                stFrame.allowFullscreen = true;
+                                mediaEl.insertBefore(stFrame, mediaEl.firstChild);
+                            } else if (posIdx !== 1) {
+                                // Leaving center: destroy iframe completely to stop playback
+                                const existingSt = mediaEl.querySelector('iframe');
+                                if (existingSt) existingSt.remove();
+                                // Create a paused placeholder iframe (no autoplay)
+                                const stFrame = document.createElement('iframe');
+                                stFrame.src = `https://streamable.com/e/${vid}?autoplay=0`;
+                                stFrame.allow = 'fullscreen';
+                                stFrame.allowFullscreen = true;
+                                stFrame.style.pointerEvents = 'none';
+                                mediaEl.insertBefore(stFrame, mediaEl.firstChild);
                             }
                         }
 
@@ -1090,6 +1094,20 @@
                             f.style.pointerEvents = posIdx === 1 ? '' : 'none';
                         });
                     });
+
+                    // After all slides updated: resume music if center slide isn't actively playing
+                    if (animate) {
+                        const centerSlideIdx = order[1];
+                        const centerSlide = slides[centerSlideIdx];
+                        const centerType = centerSlide ? centerSlide.dataset.type : '';
+                        // YouTube slides show play overlay first (not auto-playing), so resume music
+                        // Streamable entering center already called pauseMusicForVideo above
+                        if (centerType === 'youtube') {
+                            // YouTube auto-plays when entering center, music was paused - keep it paused
+                        } else if (centerType !== 'streamable') {
+                            resumeMusicAfterVideo();
+                        }
+                    }
                 }
 
                 slides.forEach(slide => {
@@ -1140,6 +1158,28 @@
                         const posIdx = order.indexOf(slideIdx);
                         if (posIdx === 0) rotateLeft();
                         else if (posIdx === 2) rotateRight();
+                        else if (posIdx === 1) {
+                            // Clicking center slide (to play video) — pause music
+                            const type = slide.dataset.type;
+                            const vid = slide.dataset.vid;
+                            const mediaEl = slide.querySelector('.slide-media');
+                            const playOverlay = slide.querySelector('.slide-play');
+                            if (type === 'youtube' && playOverlay && playOverlay.style.display !== 'none') {
+                                pauseMusicForVideo();
+                                const iframe = document.createElement('iframe');
+                                iframe.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&mute=0&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1&enablejsapi=1`;
+                                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                                iframe.allowFullscreen = true;
+                                iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+                                mediaEl.appendChild(iframe);
+                                playOverlay.style.display = 'none';
+                                playOverlay.style.pointerEvents = 'none';
+                                const fsBtn = mediaEl.querySelector('.slide-fullscreen');
+                                if (fsBtn) fsBtn.style.display = 'none';
+                            } else if (type === 'streamable') {
+                                pauseMusicForVideo();
+                            }
+                        }
                     });
                 });
 
@@ -1464,8 +1504,8 @@
 
             // Pause music when a video starts playing in showcase
             function pauseMusicForVideo() {
+                musicPausedByVideo = true;
                 if (isPlaying) {
-                    musicPausedByVideo = true;
                     stopMusic();
                 }
             }
