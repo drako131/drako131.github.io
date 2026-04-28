@@ -1066,8 +1066,8 @@
 
                         // Handle Streamable: fully remove iframe when leaving center, recreate when entering
                         if (type === 'streamable') {
-                            if (posIdx === 1 && animate) {
-                                // Entering center: create iframe with autoplay
+                            if (posIdx === 1) {
+                                // Entering/at center: create iframe with autoplay
                                 const existingSt = mediaEl.querySelector('iframe');
                                 if (existingSt) existingSt.remove();
                                 // Remove any old overlay
@@ -1149,6 +1149,21 @@
                                 ease: 'power3.out',
                             });
                         });
+                    }
+                });
+
+                // Create initial click-overlay for the Streamable slide (starts in center)
+                slides.forEach((slide, i) => {
+                    if (slide.dataset.type === 'streamable' && order.indexOf(i) === 1) {
+                        const mediaEl = slide.querySelector('.slide-media');
+                        const overlay = document.createElement('div');
+                        overlay.className = 'streamable-click-overlay';
+                        overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:5;cursor:pointer;';
+                        overlay.addEventListener('click', () => {
+                            pauseMusicForVideo();
+                            overlay.remove();
+                        }, { once: true });
+                        mediaEl.appendChild(overlay);
                     }
                 });
 
