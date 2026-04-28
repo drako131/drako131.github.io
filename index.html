@@ -334,6 +334,34 @@
             transform: scale(1.12);
             border-color: rgba(255, 23, 68, 0.5);
         }
+
+        /* Fullscreen state */
+        .slide-media:fullscreen,
+        .slide-media:-webkit-full-screen {
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide-media:fullscreen iframe,
+        .slide-media:-webkit-full-screen iframe {
+            width: 100%;
+            height: 100%;
+            max-width: 100vw;
+            max-height: 100vh;
+            aspect-ratio: 16 / 9;
+            object-fit: contain;
+        }
+        .slide-media:fullscreen .slide-fullscreen,
+        .slide-media:-webkit-full-screen .slide-fullscreen {
+            opacity: 1;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999999;
+            width: 44px;
+            height: 44px;
+        }
         .slide-fullscreen svg {
             width: 16px; height: 16px;
             fill: none;
@@ -1218,20 +1246,22 @@
                         e.stopPropagation();
 
                         if (document.fullscreenElement || document.webkitFullscreenElement) {
-                            (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+                            if (document.exitFullscreen) {
+                                document.exitFullscreen();
+                            } else if (document.webkitExitFullscreen) {
+                                document.webkitExitFullscreen();
+                            }
                             return;
                         }
 
+                        // Always fullscreen the container (not iframe) so our button stays visible
                         const slideMedia = btn.closest('.slide-media');
                         if (!slideMedia) return;
 
-                        const iframe = slideMedia.querySelector('iframe');
-                        const target = iframe || slideMedia;
-
-                        if (target.requestFullscreen) {
-                            target.requestFullscreen();
-                        } else if (target.webkitRequestFullscreen) {
-                            target.webkitRequestFullscreen();
+                        if (slideMedia.requestFullscreen) {
+                            slideMedia.requestFullscreen();
+                        } else if (slideMedia.webkitRequestFullscreen) {
+                            slideMedia.webkitRequestFullscreen();
                         }
                     });
                 });
