@@ -1068,18 +1068,33 @@
                         if (type === 'streamable') {
                             if (posIdx === 1 && animate) {
                                 // Entering center: create iframe with autoplay
-                                pauseMusicForVideo();
                                 const existingSt = mediaEl.querySelector('iframe');
                                 if (existingSt) existingSt.remove();
+                                // Remove any old overlay
+                                const oldOverlay = mediaEl.querySelector('.streamable-click-overlay');
+                                if (oldOverlay) oldOverlay.remove();
+
                                 const stFrame = document.createElement('iframe');
                                 stFrame.src = `https://streamable.com/e/${vid}?autoplay=1`;
                                 stFrame.allow = 'fullscreen; autoplay';
                                 stFrame.allowFullscreen = true;
                                 mediaEl.insertBefore(stFrame, mediaEl.firstChild);
+
+                                // Add transparent overlay to catch first click and pause music
+                                const overlay = document.createElement('div');
+                                overlay.className = 'streamable-click-overlay';
+                                overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:5;cursor:pointer;';
+                                overlay.addEventListener('click', () => {
+                                    pauseMusicForVideo();
+                                    overlay.remove(); // let subsequent clicks reach the iframe
+                                }, { once: true });
+                                mediaEl.appendChild(overlay);
                             } else if (posIdx !== 1) {
                                 // Leaving center: destroy iframe completely to stop playback
                                 const existingSt = mediaEl.querySelector('iframe');
                                 if (existingSt) existingSt.remove();
+                                const oldOverlay = mediaEl.querySelector('.streamable-click-overlay');
+                                if (oldOverlay) oldOverlay.remove();
                                 // Create a paused placeholder iframe (no autoplay)
                                 const stFrame = document.createElement('iframe');
                                 stFrame.src = `https://streamable.com/e/${vid}?autoplay=0`;

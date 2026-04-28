@@ -36,16 +36,21 @@ jobs:
       - name: Generate image manifest
         run: |
           cd images
-          # Find all image files, sort by modification time (newest first)
-          # Output as a JSON array of filenames
-          echo '[' > manifest.json
-          find . -maxdepth 1 -type f \( -iname '*.webp' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' -o -iname '*.bmp' -o -iname '*.svg' -o -iname '*.avif' \) -printf '%T@ %f\n' | sort -rn | awk '{print $2}' | while IFS= read -r file; do
-            echo "  \"$file\"," >> manifest.json
-          done
-          # Remove trailing comma and close array
-          sed -i '$ s/,$//' manifest.json
-          echo ']' >> manifest.json
-          echo "Generated manifest with $(grep -c '"' manifest.json) images"
+          # Use python3 for reliable JSON generation with filenames containing spaces/special chars
+          python3 -c "
+          import os, json, pathlib
+          exts = {'.webp','.png','.jpg','.jpeg','.gif','.bmp','.svg','.avif'}
+          files = []
+          for f in pathlib.Path('.').iterdir():
+              if f.is_file() and f.suffix.lower() in exts:
+                  files.append((f.stat().st_mtime, f.name))
+          # Sort newest first
+          files.sort(key=lambda x: x[0], reverse=True)
+          names = [name for _, name in files]
+          with open('manifest.json', 'w') as out:
+              json.dump(names, out, indent=2, ensure_ascii=False)
+          print(f'Generated manifest with {len(names)} images')
+          "
           cat manifest.json
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
