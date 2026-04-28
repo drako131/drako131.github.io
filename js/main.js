@@ -1,12 +1,3 @@
-window.__overlayTimeout = setTimeout(function() {
-            var ov = document.getElementById('entranceOverlay');
-            if (ov) ov.style.display = 'none';
-            document.querySelectorAll('.animate-on-scroll, .feature-card, .showcase-slide, .store-cta, .price-card, .community-cta, .main-header, .main-footer, .hero-badge, .hero h1, .hero p, .hero-actions .btn').forEach(function(el) {
-                el.style.opacity = '1';
-                el.style.transform = 'none';
-            });
-        }, 5000);
-
 if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('/index.html')) {
             window.location.replace(window.location.pathname.replace('/index.html', '/') + window.location.hash);
         }

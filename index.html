@@ -15,6 +15,14 @@
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
 
+    <style>
+        body { background: #050507; color: #F0F0F5; overflow-x: hidden; margin: 0; }
+        .entrance-overlay { position: fixed; inset: 0; background: #050507; z-index: 99999; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .entrance-logo { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 900; opacity: 0; }
+        .main-header, .hero-badge, .hero h1, .hero p, .hero-actions .btn,
+        .feature-card, .showcase-slide, .store-cta, .price-card,
+        .community-cta, .main-footer { opacity: 0; }
+    </style>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
