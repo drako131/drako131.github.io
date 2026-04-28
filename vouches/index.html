@@ -203,19 +203,23 @@
         }
 
         .vouches-grid {
-            column-count: 3;
-            column-gap: 1.25rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+        @media (max-width: 900px) {
+            .vouches-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 560px) {
+            .vouches-grid { grid-template-columns: 1fr; }
         }
         .vouch-card {
-            break-inside: avoid;
-            margin-bottom: 1.25rem;
+            margin: 0;
             background: var(--surface-color);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 16px; overflow: hidden;
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             transition: all 0.35s ease;
-            display: inline-block;
-            width: 100%;
         }
         .vouch-card.hidden {
             display: none;
@@ -235,10 +239,12 @@
             background: rgba(0, 0, 0, 0.3);
         }
         .vouch-media img {
-            width: 100%; height: auto; object-fit: cover; display: block;
+            width: 100%; height: 100%; object-fit: cover; display: block;
             transition: transform 0.4s ease;
         }
-        .vouch-card:hover .vouch-media img { transform: scale(1.05); }
+        .vouch-media.image-media {
+            aspect-ratio: 4 / 3;
+        }
         .vouch-media .play-overlay {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             display: flex; align-items: center; justify-content: center;
@@ -481,7 +487,7 @@
 
         async function loadImageManifest() {
             try {
-                const resp = await fetch('/images/manifest.json?v=' + Date.now());
+                const resp = await fetch('/images/manifest.json');
                 if (!resp.ok) throw new Error('Manifest not found');
                 const filenames = await resp.json();
                 const imageVouches = imagesToVouches(filenames.filter(f => f !== 'manifest.json'));
@@ -523,7 +529,7 @@
                     if (vouch.type === 'image') {
                         badgeHTML = '<span class="vouch-badge image-badge">Image</span>';
                         mediaHTML = `
-                            <div class="vouch-media" data-lightbox="image" data-src="${vouch.src}">
+                            <div class="vouch-media image-media" data-lightbox="image" data-src="${vouch.src}">
                                 <img src="${vouch.src}" alt="${vouch.title}" loading="lazy">
                                 ${badgeHTML}
                             </div>`;
