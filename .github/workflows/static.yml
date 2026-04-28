@@ -33,6 +33,20 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Generate image manifest
+        run: |
+          cd images
+          # Find all image files, sort by modification time (newest first)
+          # Output as a JSON array of filenames
+          echo '[' > manifest.json
+          find . -maxdepth 1 -type f \( -iname '*.webp' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.gif' -o -iname '*.bmp' -o -iname '*.svg' -o -iname '*.avif' \) -printf '%T@ %f\n' | sort -rn | awk '{print $2}' | while IFS= read -r file; do
+            echo "  \"$file\"," >> manifest.json
+          done
+          # Remove trailing comma and close array
+          sed -i '$ s/,$//' manifest.json
+          echo ']' >> manifest.json
+          echo "Generated manifest with $(grep -c '"' manifest.json) images"
+          cat manifest.json
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

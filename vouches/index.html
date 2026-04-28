@@ -426,14 +426,17 @@
             window.location.replace(window.location.pathname.replace('/index.html', '/') + window.location.hash);
         }
 
-        const VOUCHES = [
-               { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "xX0FHQZUcOg", source: "YouTube" },
-               { type: "youtube", title: "Ace Easy", description: "Unmatched performance", src: "h_6STFMO2rs", source: "YouTube" },
-               { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "d5j-fjiRFsc", source: "YouTube" },
-               { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "eAiOyIje1CI", source: "YouTube" },
-               { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "3kQPD5FCEzk", source: "YouTube" },
-               { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "GGRKFEYVtiA", source: "YouTube" },
-               { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "kdnKZKqHddA", source: "YouTube" },
+        // Only videos need to be hardcoded — images are auto-loaded from /images/manifest.json
+        const VIDEO_VOUCHES = [
+            { type: "youtube", title: "Latest Vouch", description: "Fresh gameplay proof", src: "Ei0mvopugEI", source: "YouTube" },
+            { type: "youtube", title: "New Vouch", description: "Recent user feedback", src: "_DCSjKUHgD0", source: "YouTube" },
+            { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "xX0FHQZUcOg", source: "YouTube" },
+            { type: "youtube", title: "Ace Easy", description: "Unmatched performance", src: "h_6STFMO2rs", source: "YouTube" },
+            { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "d5j-fjiRFsc", source: "YouTube" },
+            { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "eAiOyIje1CI", source: "YouTube" },
+            { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "3kQPD5FCEzk", source: "YouTube" },
+            { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "GGRKFEYVtiA", source: "YouTube" },
+            { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "kdnKZKqHddA", source: "YouTube" },
             { type: "youtube", title: "Customer Highlight", description: "GamingEyes in action", src: "AE7Obn7p63k", source: "YouTube" },
             { type: "youtube", title: "Vouch Video", description: "Perfect performance", src: "pGijNXS3LeA", source: "YouTube" },
             { type: "youtube", title: "Review", description: "Top tier quality", src: "GCR1nKU7bQY", source: "YouTube" },
@@ -443,63 +446,45 @@
             { type: "youtube", title: "Vouch Demonstration", description: "Best on the market", src: "-B4ho8XggNA", source: "YouTube" },
             { type: "youtube", title: "Community Vouch", description: "Highly recommended", src: "ULgOASfnVyU", source: "YouTube" },
             { type: "youtube", title: "Pro Feedback", description: "Unmatched performance", src: "djHz3OYvXJ4", source: "YouTube" },
-
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/0017.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/616528751_910075708345432_8567055646851269476_n.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/A0881FC7-1437-4B21-85DA-52E0991DDCC8.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/DDA6FD00-D3E5-4ED9-B3C2-BAD6D216B5A1.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/IMG_3311.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/IMG_3323.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/IMG_3813.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/IMG_3850.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/Screenshot_2_27_2026_7_39_24_PM.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (1).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (10).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (11).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (12).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (13).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (14).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (15).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (16).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (17).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (18).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (19).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (2).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (20).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (21).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (22).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (23).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (24).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (25).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (26).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (27).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (28).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (29).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (3).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (30).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (31).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (32).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (33).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (34).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (4).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (5).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (6).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (7).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (8).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image (9).webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image-13.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image-6.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/image.webp", source: "Discord" },
-            { type: "image", title: "User Vouch", description: "Feedback from Discord", src: "../images/li34bVQ.webp", source: "Discord" },
         ];
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // Dynamically load all images from manifest (generated by GitHub Actions on deploy)
+        // Images are auto-detected: just push any .webp/.png/.jpg/.jpeg/.gif/.bmp/.svg/.avif to /images/
+        let VOUCHES = [...VIDEO_VOUCHES];
+
+        async function loadImageManifest() {
+            try {
+                const resp = await fetch('/images/manifest.json?v=' + Date.now());
+                if (!resp.ok) throw new Error('Manifest not found');
+                const filenames = await resp.json();
+                // Convert filenames to vouch entries (manifest is already sorted newest-first)
+                const imageVouches = filenames
+                    .filter(f => f !== 'manifest.json')
+                    .map(filename => ({
+                        type: "image",
+                        title: "User Vouch",
+                        description: "Feedback from Discord",
+                        src: "../images/" + filename,
+                        source: "Discord"
+                    }));
+                // Merge: videos first, then images
+                VOUCHES = [...VIDEO_VOUCHES, ...imageVouches];
+                return true;
+            } catch (e) {
+                console.warn('Could not load image manifest, using fallback:', e);
+                return false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
             const grid = document.getElementById('vouchesGrid');
             const lightbox = document.getElementById('lightbox');
             const lightboxContent = document.getElementById('lightboxContent');
             const lightboxClose = document.getElementById('lightboxClose');
             const vouchCount = document.getElementById('vouchCount');
 
+            // Load manifest then render
+            await loadImageManifest();
             vouchCount.textContent = VOUCHES.length;
 
             function renderVouches(filter = 'all') {
@@ -729,17 +714,43 @@
 
             function animateVouchCards() {
                 const cards = gsap.utils.toArray('.vouch-card');
-                cards.forEach((card, i) => {
+                // First batch: cards visible on initial load (animate immediately with stagger)
+                const firstBatch = cards.slice(0, 12);
+                const restCards = cards.slice(12);
+
+                firstBatch.forEach((card, i) => {
                     gsap.fromTo(card,
-                        { opacity: 0 },
+                        { opacity: 0, y: 40, scale: 0.92 },
                         {
                             opacity: 1,
-                            duration: 0.5,
-                            delay: i * 0.03,
-                            ease: 'power2.out',
-                            clearProps: 'all',
+                            y: 0,
+                            scale: 1,
+                            duration: 0.6,
+                            delay: i * 0.06,
+                            ease: 'back.out(1.2)',
+                            clearProps: 'transform',
                         }
                     );
+                });
+
+                // Remaining cards: animate on scroll into view
+                restCards.forEach((card) => {
+                    gsap.set(card, { opacity: 0, y: 30, scale: 0.95 });
+                    ScrollTrigger.create({
+                        trigger: card,
+                        start: 'top 92%',
+                        once: true,
+                        onEnter: () => {
+                            gsap.to(card, {
+                                opacity: 1,
+                                y: 0,
+                                scale: 1,
+                                duration: 0.5,
+                                ease: 'power3.out',
+                                clearProps: 'transform',
+                            });
+                        }
+                    });
                 });
             }
 

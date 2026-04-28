@@ -652,7 +652,7 @@
                     </div>
                     <div class="showcase-slide" data-slide="1" data-type="streamable" data-vid="4uwent">
                         <div class="slide-media">
-                            <iframe allow="fullscreen" allowfullscreen src="https://streamable.com/e/4uwent?"></iframe>
+                            <iframe allow="fullscreen" allowfullscreen src="https://streamable.com/e/4uwent?autoplay=0"></iframe>
                             <button class="slide-fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
                         </div>
                     </div>
@@ -1033,11 +1033,13 @@
                         const playOverlay = slide.querySelector('.slide-play');
 
                         if (posIdx === 1 && type === 'youtube' && animate) {
+                            // Pause background music when video plays
+                            pauseMusicForVideo();
                             setTimeout(() => {
                                 const existingIframe = mediaEl.querySelector('iframe');
                                 if (!existingIframe) {
                                     const iframe = document.createElement('iframe');
-                                    iframe.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&mute=0&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1`;
+                                    iframe.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&mute=0&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1&enablejsapi=1`;
                                     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
                                     iframe.allowFullscreen = true;
                                     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
@@ -1060,6 +1062,28 @@
                             }
                             const fsBtn = mediaEl.querySelector('.slide-fullscreen');
                             if (fsBtn) fsBtn.style.display = '';
+                            // Resume music when video is removed
+                            resumeMusicAfterVideo();
+                        }
+
+                        // Handle Streamable: pause when not in center, play when in center
+                        if (type === 'streamable') {
+                            const stIframe = mediaEl.querySelector('iframe');
+                            if (stIframe) {
+                                if (posIdx === 1) {
+                                    // Restore src with autoplay when in focus
+                                    const wantedSrc = `https://streamable.com/e/${vid}?autoplay=1`;
+                                    if (!stIframe.src.includes('autoplay=1')) {
+                                        stIframe.src = wantedSrc;
+                                    }
+                                } else {
+                                    // Stop playback: reload without autoplay
+                                    const pausedSrc = `https://streamable.com/e/${vid}?autoplay=0`;
+                                    if (!stIframe.src.includes('autoplay=0')) {
+                                        stIframe.src = pausedSrc;
+                                    }
+                                }
+                            }
                         }
 
                         mediaEl.querySelectorAll('iframe').forEach(f => {
@@ -1410,18 +1434,77 @@
             const playIcon = document.getElementById('playIcon');
             const pauseIcon = document.getElementById('pauseIcon');
             let isPlaying = false;
-            audioToggle.addEventListener('click', () => {
+            let musicPausedByVideo = false;
+            let userWantsMusic = true; // assume user wants music by default
+
+            function updateMusicUI() {
                 if (isPlaying) {
-                    bgMusic.pause();
-                    playIcon.style.display = 'block';
-                    pauseIcon.style.display = 'none';
-                } else {
-                    bgMusic.play().catch(e => console.log('Audio play failed:', e));
                     playIcon.style.display = 'none';
                     pauseIcon.style.display = 'block';
+                } else {
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
                 }
-                isPlaying = !isPlaying;
+            }
+
+            function startMusic() {
+                bgMusic.volume = 0.5;
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    userWantsMusic = true;
+                    updateMusicUI();
+                }).catch(e => console.log('Audio play failed:', e));
+            }
+
+            function stopMusic() {
+                bgMusic.pause();
+                isPlaying = false;
+                updateMusicUI();
+            }
+
+            // Pause music when a video starts playing in showcase
+            function pauseMusicForVideo() {
+                if (isPlaying) {
+                    musicPausedByVideo = true;
+                    stopMusic();
+                }
+            }
+
+            // Resume music after video stops (only if it was paused by video)
+            function resumeMusicAfterVideo() {
+                if (musicPausedByVideo && userWantsMusic) {
+                    musicPausedByVideo = false;
+                    startMusic();
+                }
+            }
+
+            audioToggle.addEventListener('click', () => {
+                musicPausedByVideo = false;
+                if (isPlaying) {
+                    userWantsMusic = false;
+                    stopMusic();
+                } else {
+                    userWantsMusic = true;
+                    startMusic();
+                }
             });
+
+            // Autoplay music on first user interaction
+            let hasAutoPlayed = false;
+            function tryAutoplayMusic() {
+                if (hasAutoPlayed) return;
+                hasAutoPlayed = true;
+                startMusic();
+                // Remove listeners after first trigger
+                document.removeEventListener('click', tryAutoplayMusic);
+                document.removeEventListener('scroll', tryAutoplayMusic);
+                document.removeEventListener('keydown', tryAutoplayMusic);
+                document.removeEventListener('touchstart', tryAutoplayMusic);
+            }
+            document.addEventListener('click', tryAutoplayMusic);
+            document.addEventListener('scroll', tryAutoplayMusic, { once: true });
+            document.addEventListener('keydown', tryAutoplayMusic, { once: true });
+            document.addEventListener('touchstart', tryAutoplayMusic, { once: true });
         });
     </script>
 </body>
