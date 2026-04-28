@@ -33,27 +33,22 @@ if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('/
                     scrub: 0.3,
                 }
             });
-            gsap.set('.main-header', { yPercent: -100, opacity: 0 });
-            gsap.set('.hero-badge', { opacity: 0, y: 40, scale: 0.7 });
-            gsap.set('.hero h1', { opacity: 0, y: 100, skewY: 3 });
-            gsap.set('.hero p', { opacity: 0, y: 50 });
-            gsap.set('.hero-actions .btn', { opacity: 0, y: 40, scale: 0.7 });
-            gsap.set('.feature-card', { opacity: 0, y: 100, rotateX: 25, scale: 0.85 });
-            gsap.set('.showcase-slide', { opacity: 0, y: 80 });
-            gsap.set('.store-cta', { opacity: 0, x: -150, rotateY: 12 });
-            gsap.set('.price-card', { opacity: 0, scale: 0, rotateZ: -15, y: 80 });
-            gsap.set('.community-cta', { opacity: 0, x: 150, rotateY: -12 });
-            gsap.set('.main-footer', { opacity: 0, y: 40 });
+            gsap.set('.main-header', { yPercent: -100 });
+            gsap.set('.hero-badge', { y: 40, scale: 0.7 });
+            gsap.set('.hero h1', { y: 100, skewY: 3 });
+            gsap.set('.hero p', { y: 50 });
+            gsap.set('.hero-actions .btn', { y: 40, scale: 0.7 });
+            gsap.set('.feature-card', { y: 100, rotateX: 25, scale: 0.85 });
+            gsap.set('.showcase-slide', { y: 80 });
+            gsap.set('.store-cta', { x: -150, rotateY: 12 });
+            gsap.set('.price-card', { scale: 0, rotateZ: -15, y: 80 });
+            gsap.set('.community-cta', { x: 150, rotateY: -12 });
+            gsap.set('.main-footer', { y: 40 });
             const hasSeenEntrance = sessionStorage.getItem('ge_entrance_seen');
             if (prefersReducedMotion || hasSeenEntrance) {
                 clearTimeout(window.__overlayTimeout);
                 gsap.set('.entrance-overlay', { autoAlpha: 0, display: 'none' });
-                gsap.set(['.main-header', '.hero-badge', '.hero h1', '.hero p'],
-                    { clearProps: 'all' });
-                gsap.set('.hero-actions .btn', { clearProps: 'all' });
-                gsap.set(['.feature-card', '.showcase-slide', '.store-cta',
-                    '.price-card', '.community-cta', '.main-footer'],
-                    { clearProps: 'all' });
+                document.body.classList.add('js-revealed');
                 gsap.to('.hero-badge', {
                     y: -10,
                     duration: 2.5,

@@ -511,3 +511,25 @@
             .entrance-overlay { display: none !important; }
             .scroll-progress { display: none !important; }
         }
+        .main-header,
+        .hero-badge,
+        .hero h1,
+        .hero p,
+        .hero-actions .btn,
+        .feature-card,
+        .showcase-slide,
+        .store-cta,
+        .price-card,
+        .community-cta,
+        .main-footer { opacity: 0; will-change: transform, opacity; }
+        body.js-revealed .main-header,
+        body.js-revealed .hero-badge,
+        body.js-revealed .hero h1,
+        body.js-revealed .hero p,
+        body.js-revealed .hero-actions .btn,
+        body.js-revealed .feature-card,
+        body.js-revealed .showcase-slide,
+        body.js-revealed .store-cta,
+        body.js-revealed .price-card,
+        body.js-revealed .community-cta,
+        body.js-revealed .main-footer { opacity: 1; transform: none; }
