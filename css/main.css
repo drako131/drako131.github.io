@@ -424,6 +424,7 @@
         }
         .community-cta h2 { font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1rem; font-weight: 800; letter-spacing: -1px; }
         .community-cta p { color: var(--text-muted); max-width: 500px; margin: 0 auto 2rem auto; line-height: 1.7; }
+        .community-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .discord-btn {
             background: #5865F2; color: #fff;
             box-shadow: 0 4px 20px rgba(88, 101, 242, 0.25);
@@ -431,6 +432,15 @@
         .discord-btn:hover {
             background: #4752C4;
             box-shadow: 0 8px 35px rgba(88, 101, 242, 0.4);
+            transform: translateY(-2px);
+        }
+        .telegram-btn, .btn-telegram {
+            background: #229ED9; color: #fff;
+            box-shadow: 0 4px 20px rgba(34, 158, 217, 0.25);
+        }
+        .telegram-btn:hover, .btn-telegram:hover {
+            background: #1A8AC4;
+            box-shadow: 0 8px 35px rgba(34, 158, 217, 0.4);
             transform: translateY(-2px);
         }
         .main-footer {
