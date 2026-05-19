@@ -72,9 +72,10 @@ if (window.location.pathname.endsWith('/index.html')) {
             vouchCount.textContent = VOUCHES.length;
             function renderVouches(filter = 'all') {
                 grid.innerHTML = '';
-                const filterType = filter === 'video' ? ['streamable', 'youtube'] : 
+                const filterType = filter === 'video' ? ['streamable', 'youtube'] :
                                    filter === 'image' ? ['image'] : null;
-                VOUCHES.forEach((vouch, index) => {
+                const reversed = [...VOUCHES].reverse();
+                reversed.forEach((vouch, index) => {
                     if (filterType && !filterType.includes(vouch.type)) return;
                     const card = document.createElement('div');
                     card.className = 'vouch-card';

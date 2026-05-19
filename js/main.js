@@ -49,6 +49,7 @@ if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('/
                 clearTimeout(window.__overlayTimeout);
                 gsap.set('.entrance-overlay', { autoAlpha: 0, display: 'none' });
                 document.body.classList.add('js-revealed');
+                gsap.set(['.main-header', '.hero-badge', '.hero h1', '.hero p', '.hero-actions .btn'], { clearProps: 'all' });
                 gsap.to('.hero-badge', {
                     y: -10,
                     duration: 2.5,
